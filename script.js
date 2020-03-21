@@ -147,20 +147,12 @@ function Ball (posX, posY, velX, velY, r, m) {
 	};
 	
 	// Collision resolution
+	// simplified (physically not correct!)
 	this.bounceOff = function (ball) {
-		var dpx = ball.p.x - this.p.x;
-		var dpy = ball.p.y - this.p.y;
-		var dvx = ball.v.x - this.v.x;
-		var dvy = ball.v.y - this.v.y;
-		var dpdv = dpx*dvx + dpy*dvy;
-		var R = this.r + ball.r;
-		var J = 2*this.m*ball.m*dpdv/((this.m + ball.m)*R);
-		var Jx = J*dpx/R;
-		var Jy = J*dpy/R;
-		this.v.x += Jx/this.m;
-		this.v.y += Jy/this.m;
-		ball.v.x -= Jx/ball.m;
-		ball.v.y -= Jy/ball.m;
+		this.v.x  = -this.v.x;
+		this.v.y  = -this.v.y;
+		ball.v.x  = -ball.v.x;
+		ball.v.y  = -ball.v.y;
 	};
 	this.bounceOffVerticalWall = function () {
 		this.v.x = -this.v.x;
