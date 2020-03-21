@@ -170,7 +170,6 @@ function Ball (posX, posY, velX, velY, r, m) {
 	};
 }
 
-
 /*
 	SimEvent constructor
 	---
@@ -408,234 +407,55 @@ function posNeg () {
 	return Math.pow(-1, Math.floor(Math.random()*2));
 }
 function generateBalls (params) {
-	if (!params.style) {
-		console.log('Missing params.style');
-		return [];
+	var balls = [];
+	var newBall;
+	var badBallCounter = 0;
+	for (var i = 0; i < params.n; i++) {
+		if (params.r) {
+			newBall = new Ball(
+				Math.floor(Math.random()*cl),
+				Math.floor(Math.random()*cl),
+				posNeg()*Math.floor(Math.random()*100),
+				posNeg()*Math.floor(Math.random()*100),
+				params.r
+			);
+		} else {
+			newBall = new Ball(
+				Math.floor(Math.random()*cl),
+				Math.floor(Math.random()*cl),
+				posNeg()*Math.floor(Math.random()*100),
+				posNeg()*Math.floor(Math.random()*100),
+				2 + Math.floor(Math.random()*29)
+			);
+		}
+		if (validateNewBall(balls, newBall)) {
+			balls.push(newBall);
+			badBallCounter = 0;
+		} else {
+			if (++badBallCounter > 99) {
+				console.log('Too many bad balls in random ball generator');
+				return [];
+			}
+			i--;
+		}
 	}
-	switch (params.style) {
-		// Required parameters: <none>
-		case 'diffusion':
-			var balls = [];
-			var n = 400;
-			var m = 49; //should be odd
-			var h = cl/m;
-			for (var i = -1; i < m + 1; i++) {
-				if (	i === Math.floor((m - 1)/2) 
-					||	i === Math.floor((m - 1)/2) - 1)
-						{ continue; }
-				balls.push(new Ball(
-					0.5*cl,
-					(h + 0.5)*(i + 1),
-					0, 0, h, 200000
-				));
-			}
-			var badBallCounter = 0;
-			for (var i = 0; i < n; i++) {
-				newBall = new Ball(
-					0.1*Math.floor(Math.random()*cl),
-					Math.floor(Math.random()*cl),
-					posNeg()*Math.floor(Math.random()*200),
-					posNeg()*Math.floor(Math.random()*200),
-					2, 0.00001
-				);
-				if (validateNewBall(balls, newBall)) {
-					balls.push(newBall);
-					badBallCounter = 0;
-				} else {
-					if (++badBallCounter > 99) {
-						console.log('Too many bad balls in diffusion ball generator');
-						return [];
-					}
-					i--;
-				}
-			}
-			return balls;
-			break;
-		// Required parameters: waveFunctionX, waveFunctionY
-		// Optional parameters: num, r
-		case 'waves':
-			var balls = [];
-			var num = params.num || 10;
-			var r = params.r || 10;
-			for (var i = 0; i < num; i++) {
-				for (var j = 0; j < num; j++) {
-					balls.push(new Ball(
-						Math.floor(cl*(i+1)/(num+1)),
-						Math.floor(cl*(j+1)/(num+1)),
-						params.waveFunctionX(i,j),
-						params.waveFunctionY(i,j),
-						r
-					));
-				}
-			}
-			return balls;
-			break;
-		// Required parameters: <none>
-		case 'grid':
-			var balls = [];
-			var num = 20;
-			for (var i = -1; i <= num; i++) {
-				for (var j = -1; j <= num; j++) {
-					balls.push(new Ball(
-						Math.floor(cl*(i+1)/(num+1)),
-						Math.floor(cl*(j+1)/(num+1)),
-						0, 0, 10, 200000
-					));
-				}
-			}
-			balls.push(new Ball(
-				Math.floor(0.5*cl), 
-				Math.floor(0.5*cl),
-				posNeg()*Math.floor(300 + Math.random()*200),
-				posNeg()*Math.floor(300 + Math.random()*200),
-				3, 0.00001
-			));
-			return balls;
-			break;
-		// Required parameters: n, r
-		case 'brownian':
-			var balls = [];
-			var newBall;
-			balls.push(new Ball(
-				Math.floor(cl/2), Math.floor(cl/2), 0, 0, 20
-			));
-			var badBallCounter = 0;
-			for (var i = 0; i < params.n; i++) {
-				newBall = new Ball(
-					Math.floor(Math.random()*cl),
-					Math.floor(Math.random()*cl),
-					posNeg()*Math.floor(Math.random()*200),
-					posNeg()*Math.floor(Math.random()*200),
-					params.r
-				);
-				if (validateNewBall(balls, newBall)) {
-					balls.push(newBall);
-					badBallCounter = 0;
-				} else {
-					if (++badBallCounter > 99) {
-						console.log('Too many bad balls in brownian ball generator');
-						return [];
-					}
-					i--;
-				}
-			}
-			return balls;
-			break;
-		// Required parameter: n
-		// Optional parameter: r
-		case 'random':
-			var balls = [];
-			var newBall;
-			var badBallCounter = 0;
-			for (var i = 0; i < params.n; i++) {
-				if (params.r) {
-					newBall = new Ball(
-						Math.floor(Math.random()*cl),
-						Math.floor(Math.random()*cl),
-						posNeg()*Math.floor(Math.random()*100),
-						posNeg()*Math.floor(Math.random()*100),
-						params.r
-					);
-				} else {
-					newBall = new Ball(
-						Math.floor(Math.random()*cl),
-						Math.floor(Math.random()*cl),
-						posNeg()*Math.floor(Math.random()*100),
-						posNeg()*Math.floor(Math.random()*100),
-						2 + Math.floor(Math.random()*29)
-					);
-				}
-				if (validateNewBall(balls, newBall)) {
-					balls.push(newBall);
-					badBallCounter = 0;
-				} else {
-					if (++badBallCounter > 99) {
-						console.log('Too many bad balls in random ball generator');
-						return [];
-					}
-					i--;
-				}
-			}
-			return balls;
-			break;
-		default:
-			console.log('Bad style in generateBalls');
-			return [];
-			break;
-	}
+	return balls;
 }
 
 
 /*
 	Running the simulation
 */
-var modeNameMap = [
-	'Brownian',
-	'Expanding squares',
-	'Horizontal waves',
-	'Grid',
-	'Random (random radius)',
-	'Random (constant radius)',
-	'Diffusion'
-];
 var ms = 30;
 var dt = ms/1000;
 var balls = [];
 var sim;
-function makeSim (mode) {
-	// Generate balls based on mode
-	switch (mode) {
-		case 0:
-			balls = generateBalls({
-				style: 'brownian', 
-				n: 400, 
-				r: 3
-			});
-			break;
-		case 1:
-			balls = generateBalls({
-				style: 'waves', 
-				waveFunctionX: function (i, j) { return 10*i; },
-				waveFunctionY: function (i, j) { return 10*j; }
-			});
-			break;
-		case 2: 
-			balls = generateBalls({
-				style: 'waves', 
-				waveFunctionX: function (i, j) { return 100 + 2*j; },
-				waveFunctionY: function (i, j) { return 0; },
-				num: 20,
-				r: 5
-			});
-			break;
-		case 3:
-			balls = generateBalls({
-				style: 'grid'
-			});
-			break;
-		case 4:
-			balls = generateBalls({
-				style: 'random',
-				n: Math.floor(100 + Math.random()*100)
-			});
-			break;
-		case 5:
-			balls = generateBalls({
-				style: 'random',
-				n: Math.floor(100 + Math.random()*100),
-				r: Math.floor(3 + Math.random()*10)
-			});
-			break;
-		case 6:
-			balls = generateBalls({
-				style: 'diffusion'
-			});
-			break;
-		default:
-			console.log('Invalid mode');
-			break;
-	}
-	// Create new sim
+function makeSim () {
+	balls = generateBalls({
+		style: 'random',
+		n: Math.floor(100 + Math.random()*100),
+		r: Math.floor(3 + Math.random()*10)})
+
 	sim = new Sim(balls);
 }
 
@@ -661,23 +481,12 @@ function runSim () {
 	}
 }
 
-var mode = 0;
-makeSim(mode);
+makeSim();
 sim.redraw();
-
-var selectorRow = $('#selector-row');
-for (var i = 0; i < modeNameMap.length; i++) {
-	selectorRow.append(
-		'<div class="radio-box"><input type="radio" name="mode" value=' + i + '>' + modeNameMap[i] + '</div>'
-	);
-}
-selectorRow.children().children()[0].checked = 'true';
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
-	mode = parseInt($('input[name=mode]:checked').val());
-	makeSim(mode);
 	sim.redraw();
 });
