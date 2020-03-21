@@ -11,7 +11,7 @@ var diff = document.documentElement.clientHeight - CANVAS_HEIGHT;
 
 
 var gcounter = 0;
-var stateCount = {uninfected: 0, infected: 0, healed: 0, dead: 0, freeBeds: 0}
+var stateCount = {uninfected: 0, infected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0}
 
 var stateProxy = new Proxy(stateCount, {
 	set: function (target, key, value) {
@@ -109,13 +109,14 @@ function MinPQ () {
 /*
 	Ball constructor
 */
-function Ball (posX, posY, velX, velY, r, recoveryTime) {
+function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	this.p = {x: posX, y: posY};
 	this.v = {x: velX, y: velY};
 	this.r = r;
 	this.healtimer = recoveryTime;
+	this.hospitaltimer = hospitalTime;
 
-	var s = 0
+	var s = 0 // 0:uninfected, 1:infected, 2:healed, 3: dead, 4:hospital
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
 
 	var m = Math.ceil(Math.PI*r*r);
@@ -123,7 +124,7 @@ function Ball (posX, posY, velX, velY, r, recoveryTime) {
 
 	// Basic move/draw
 	this.move = function (dt) {
-		if(this.s!=3){
+		if(this.s!=3 && this.s!=4){
 			this.p.x = this.p.x + this.v.x*dt;
 			this.p.y = this.p.y + this.v.y*dt;
 		}
@@ -134,30 +135,62 @@ function Ball (posX, posY, velX, velY, r, recoveryTime) {
 		if(this.s == 1){
 			this.healtimer-=1;
 			if(this.healtimer==0){
-				if(Math.random()>0.05){
+				stateProxy.infected = parseInt(stateProxy.infected) - parseInt(1)
+				if(Math.random()*100<parseInt(sliderNeededHospital.value)) {
+					if(stateProxy.freeBeds>0)
+					{
+						stateProxy.freeBeds = parseInt(stateProxy.freeBeds) - parseInt(1)
+						this.s = 4
+					}
+					else
+					{
+						stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1)
+						stateProxy.diedBecauseOfNoBed = parseInt(stateProxy.diedBecauseOfNoBed) + parseInt(1)
+						this.s = 3
+					}
+				}
+				else
+				{
 					this.s = 2;
 					stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
-					stateProxy.infected = parseInt(stateProxy.infected) - parseInt(1);
 				}
-				else{
-					this.s = 3;
-					stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1);
-					stateProxy.infected = parseInt(stateProxy.infected) - parseInt(1);
+			}
+		}else
+		{
+			if(this.s == 4) {
+				this.hospitaltimer-=1;
+				if(this.hospitaltimer==0)
+				{
+					stateProxy.freeBeds = parseInt(stateProxy.freeBeds) + parseInt(1)
+					if(Math.random()*100<parseInt(sliderDeathRate.value)) {
+						stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1)
+						this.s = 3
+					}
+					else
+					{
+						this.s = 2;
+						stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
+					}
 				}
 			}
 		}
-
-
+		
 		ctx.beginPath();
-		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
-
+		if(this.s==4)
+		{	
+			ctx.rect(this.p.x, this.p.y, this.r*3, this.r*3)
+		}
+		else
+		{
+			ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
+		}
 
 		//die Farbe ist unterschiedlich je nach Status
 
 		switch(this.s) {
-		  case 0:
-		    ctx.fillStyle = "black";
-		    break;
+			case 0:
+				ctx.fillStyle = "black";
+				break;
 			case 1:
 				ctx.fillStyle = "red";
 				break;
@@ -166,7 +199,10 @@ function Ball (posX, posY, velX, velY, r, recoveryTime) {
 				break;
 			case 3:
 				ctx.fillStyle = "#ab1bb5";
-			}
+				break;
+			case 4:
+				ctx.fillStyle = "#630700";
+		}
 
 		ctx.fill();
 	};
@@ -500,7 +536,8 @@ function generateBalls (params) {
 			posNeg()*Math.floor(vx),
 			posNeg()*Math.floor(vy),
 			params.r,
-			params.recoveryTime
+			params.recoveryTime,
+			params.hospitalTime
 		);
 
 		if (validateNewBall(balls, newBall)) {
@@ -534,12 +571,13 @@ var dt = ms/1000;
 var balls = [];
 var sim;
 
-function makeSim (populationSize, infectedSize, velocity, freeBeds, recoveryTime) {
+function makeSim (populationSize, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
 	stateProxy.infected = infectedSize
 	stateProxy.healed = 0
 	stateProxy.dead = 0
 	stateProxy.uninfected = populationSize-infectedSize;
 	stateProxy.freeBeds = freeBeds;
+	stateProxy.diedBecauseOfNoBed = 0;
 
 	balls = generateBalls({
 		style: 'random',
@@ -547,7 +585,8 @@ function makeSim (populationSize, infectedSize, velocity, freeBeds, recoveryTime
 		r: 5,
 		velocity: velocity,
 		infected: infectedSize,
-		recoveryTime: recoveryTime
+		recoveryTime: recoveryTime,
+		hospitalTime: hospitalTime
 	})
 
 	sim = new Sim(balls);
@@ -631,13 +670,13 @@ sliderHospitalTime.oninput = function() {
 	outputHospitalTime.innerHTML = this.value;
 }
 
-makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value) );
+makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value) );
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
-	makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value) );
+	makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value) );
 	sim.redraw();
 });
