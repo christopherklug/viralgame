@@ -11,7 +11,7 @@ canvas.style.marginTop = '20px';
 
 
 var gcounter = 0;
-var stateCount = [populationSize.value,0,0,0];
+var stateCount = {uninfected: 0, infected: 0, healed: 0, dead: 0}
 
 /*
 	Minimum Priority Queue (MinPQ) constructor
@@ -104,8 +104,8 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 	if(posX<50&&posY<50){
 		this.s=1;
-		stateCount[1]+=1;
-		stateCount[0]-=1;
+		stateCount.infected+=1;
+		stateCount.uninfected-=1;
 	}
 	else this.s=0;
 
@@ -135,13 +135,13 @@ function Ball (posX, posY, velX, velY, r, m) {
 			if(this.healtimer<=0){
 				if(Math.random()>0.05){
 					this.s = 2;
-					stateCount[2]+=1;
-					stateCount[1]-=1;
+					stateCount.healed+=1;
+					stateCount.infected-=1;
 				}
 				else{
 					this.s = 3;
-					stateCount[3]+=1;
-					stateCount[2]-=1;
+					stateCount.dead+=1;
+					stateCount.healed-=1;
 				}
 			}
 		}
@@ -226,14 +226,14 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 		if(ball.s==1&&this.s!=2){
 			this.s=1;
-			stateCount[1]+=1;
-			stateCount[0]-=1;
+			stateCount.infected+=1;
+			stateCount.uninfected-=1;
 		}
 
 		if(this.s==1&&ball.s!=2){
 			ball.s=1;
-			stateCount[1]+=1;
-			stateCount[0]-=1;
+			stateCount.infected+=1;
+			stateCount.uninfected-=1;
 		}
 		/*if(ball.s==1){
 			if(this.s=0){
