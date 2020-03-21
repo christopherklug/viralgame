@@ -169,11 +169,11 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			}
 		}
 
-		stateProxy.population = parseInt(stateProxy.population) - parseInt(stateProxy.dead);
-
 		ctx.beginPath();
-		if (this.s == 4) {
-			ctx.rect(this.p.x, this.p.y, this.r * 3, this.r * 3)
+		if(this.s==4)
+		{
+			ctx.rect(this.p.x, this.p.y-this.r, this.r, this.r*3)
+			ctx.rect(this.p.x-this.r, this.p.y, this.r*3, this.r)
 		}
 		else {
 			ctx.arc(this.p.x, this.p.y, this.r, 0, 2 * Math.PI);
@@ -186,7 +186,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 				ctx.fillStyle = "black";
 				break;
 			case 1:
-				ctx.fillStyle = "red";
+				ctx.fillStyle = "#CC0000";
 				break;
 			case 2:
 				ctx.fillStyle = "green";
@@ -195,7 +195,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 				ctx.fillStyle = "#ab1bb5";
 				break;
 			case 4:
-				ctx.fillStyle = "#630700";
+				ctx.fillStyle = "red";
 		}
 
 		ctx.fill();
@@ -518,10 +518,10 @@ function generateBalls(params) {
 
 	for (var i = 0; i < params.n; i++) {
 
-		var min = 0;
-		var max = params.velocity;
+		var min=0;
+		var max=params.velocity;
 		var vx = Math.random() * (+max - +min) + +min;
-		var vy = Math.sqrt(Math.pow(params.velocity, 2))
+		var vy = Math.sqrt(Math.pow(params.velocity,2))
 
 		newBall = new Ball(
 			Math.floor(Math.random() * CANVAS_WIDTH),
