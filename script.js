@@ -11,7 +11,7 @@ var diff = document.documentElement.clientHeight - CANVAS_HEIGHT;
 
 
 var gcounter = 0;
-var stateCount = {uninfected: 0, infected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0}
+var stateCount = { uninfected: 0, infected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0 }
 
 var stateProxy = new Proxy(stateCount, {
 	set: function (target, key, value) {
@@ -32,15 +32,18 @@ var stateProxy = new Proxy(stateCount, {
 		var outputStatFreeBeds = document.getElementById("statFreeBeds");
 		outputStatFreeBeds.innerHTML = stateCount.freeBeds
 
+		var outputStatFreeBeds = document.getElementById("statDiedBecauseOfNoBed");
+		outputStatFreeBeds.innerHTML = stateCount.diedBecauseOfNoBed
+
 		return true;
 	}
-  });
+});
 
 
 /*
 	Minimum Priority Queue (MinPQ) constructor
 */
-function MinPQ () {
+function MinPQ() {
 	this.heap = [null];
 	this.n = 0;
 
@@ -73,21 +76,21 @@ function MinPQ () {
 
 	// Heap helpers
 	this.swim = function (k) {
-		var j = Math.floor(k/2);
+		var j = Math.floor(k / 2);
 		while (j > 0 && this.less(k, j)) {
 			this.exch(j, k);
 			k = j;
-			j = Math.floor(k/2);
+			j = Math.floor(k / 2);
 		}
 	};
 	this.sink = function (k) {
-		var j = 2*k;
+		var j = 2 * k;
 		while (j <= this.n) {
-			if (j < this.n && this.less(j+1, j)) { j++; }
+			if (j < this.n && this.less(j + 1, j)) { j++; }
 			if (this.less(k, j)) { break; }
 			this.exch(j, k);
 			k = j;
-			j = 2*k;
+			j = 2 * k;
 		}
 	};
 
@@ -109,70 +112,77 @@ function MinPQ () {
 /*
 	Ball constructor
 */
-function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
-	this.p = {x: posX, y: posY};
-	this.v = {x: velX, y: velY};
+function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
+	this.p = { x: posX, y: posY };
+	this.v = { x: velX, y: velY };
 	this.r = r;
 	this.healtimer = recoveryTime;
 	this.hospitaltimer = hospitalTime;
+	this.partner = null;
 
 	var s = 0 // 0:uninfected, 1:infected, 2:healed, 3: dead, 4:hospital
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
 
-	var m = Math.ceil(Math.PI*r*r);
+	var m = Math.ceil(Math.PI * r * r);
 
 
 	// Basic move/draw
 	this.move = function (dt) {
-		if(this.s!=3 && this.s!=4){
-			this.p.x = this.p.x + this.v.x*dt;
-			this.p.y = this.p.y + this.v.y*dt;
+		if (this.s != 3 && this.s != 4) {
+			this.p.x = this.p.x + this.v.x * dt;
+			this.p.y = this.p.y + this.v.y * dt;
 		}
 	};
 
 	this.draw = function () {
 
-		if(this.s == 1){
-			this.healtimer-=1;
-			if(this.healtimer==0){
+		if (this.s == 1) {
+			this.healtimer -= 1;
+			if (this.healtimer == 0) {
 				stateProxy.infected = parseInt(stateProxy.infected) - parseInt(1)
-				if(Math.random()*100<parseInt(sliderNeededHospital.value)) {
-					if(stateProxy.freeBeds>0)
-					{
+				if (Math.random() * 100 < parseInt(sliderNeededHospital.value)) {
+					if (stateProxy.freeBeds > 0) {
 						stateProxy.freeBeds = parseInt(stateProxy.freeBeds) - parseInt(1)
 						this.s = 4
 					}
-					else
-					{
+					else {
 						stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1)
 						stateProxy.diedBecauseOfNoBed = parseInt(stateProxy.diedBecauseOfNoBed) + parseInt(1)
 						this.s = 3
 					}
 				}
-				else
-				{
+				else {
 					this.s = 2;
 					stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
 				}
 			}
-		}else
-		{
-			if(this.s == 4) {
-				this.hospitaltimer-=1;
-				if(this.hospitaltimer==0)
-				{
+		} else {
+			if (this.s == 4) {
+				this.hospitaltimer -= 1;
+				if (this.hospitaltimer == 0) {
 					stateProxy.freeBeds = parseInt(stateProxy.freeBeds) + parseInt(1)
-					if(Math.random()*100<parseInt(sliderDeathRate.value)) {
+					if (Math.random() * 100 < parseInt(sliderDeathRate.value)) {
 						stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1)
 						this.s = 3
 					}
-					else
-					{
+					else {
 						this.s = 2;
 						stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
 					}
 				}
 			}
+		}
+
+		stateProxy.population = parseInt(stateProxy.root_population) - parseInt(stateProxy.dead);
+
+		if(this.partner!=null)
+		{
+			ctx.beginPath();
+			ctx.moveTo(this.p.x, this.p.y);
+			ctx.lineTo(this.partner.p.x, this.partner.p.y);
+			ctx.lineWidth = 1;
+			ctx.strokeStyle = "#a6a6a6";
+			ctx.stroke();
 		}
 
 		ctx.beginPath();
@@ -181,28 +191,27 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			ctx.rect(this.p.x, this.p.y-this.r, this.r, this.r*3)
 			ctx.rect(this.p.x-this.r, this.p.y, this.r*3, this.r)
 		}
-		else
-		{
-			ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
+		else {
+			ctx.arc(this.p.x, this.p.y, this.r, 0, 2 * Math.PI);
 		}
 
 		//die Farbe ist unterschiedlich je nach Status
 
-		switch(this.s) {
+		switch (this.s) {
 			case 0:
-				ctx.fillStyle = "black";
+				ctx.fillStyle = "#ffbb33";
 				break;
 			case 1:
-				ctx.fillStyle = "#CC0000";
+				ctx.fillStyle = "#ff4444";
 				break;
 			case 2:
-				ctx.fillStyle = "green";
+				ctx.fillStyle = "#00C851";
 				break;
 			case 3:
-				ctx.fillStyle = "#ab1bb5";
+				ctx.fillStyle = "#333";
 				break;
 			case 4:
-				ctx.fillStyle = "red";
+				ctx.fillStyle = "#ff4444";
 		}
 
 		ctx.fill();
@@ -226,50 +235,52 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 		var dpy = ball.p.y - this.p.y;
 		var dvx = ball.v.x - this.v.x;
 		var dvy = ball.v.y - this.v.y;
-		var dpdv = dvx*dpx + dvy*dpy;
+		var dpdv = dvx * dpx + dvy * dpy;
 		if (dpdv > 0) { return Number.POSITIVE_INFINITY; }
-		var dvdv = dvx*dvx + dvy*dvy;
-		var dpdp = dpx*dpx + dpy*dpy;
+		var dvdv = dvx * dvx + dvy * dvy;
+		var dpdp = dpx * dpx + dpy * dpy;
 		var R = ball.r + this.r;
-		var D = dpdv*dpdv - dvdv*(dpdp - R*R);
+		var D = dpdv * dpdv - dvdv * (dpdp - R * R);
 		if (D < 0) { return Number.POSITIVE_INFINITY; }
 		//console.log('Predicted: ' + (-(dpdv + Math.sqrt(D))/dvdv) )
-		return ( -(dpdv + Math.sqrt(D))/dvdv );
+		return (-(dpdv + Math.sqrt(D)) / dvdv);
 	};
 	this.timeToHitVerticalWall = function () {
 		if (this.v.x === 0) { return Number.POSITIVE_INFINITY; }
 		if (this.v.x > 0) {
-			return ((CANVAS_WIDTH - this.r - this.p.x)/this.v.x);
+			return ((CANVAS_WIDTH - this.r - this.p.x) / this.v.x);
 		}
-		return ((this.r - this.p.x)/this.v.x);
+		return ((this.r - this.p.x) / this.v.x);
 	};
 	this.timeToHitHorizontalWall = function () {
 		if (this.v.y === 0) { return Number.POSITIVE_INFINITY; }
 		if (this.v.y > 0) {
-			return ((CANVAS_HEIGHT - this.r - this.p.y)/this.v.y);
+			return ((CANVAS_HEIGHT - this.r - this.p.y) / this.v.y);
 		}
-		return ((this.r - this.p.y)/this.v.y);
+		return ((this.r - this.p.y) / this.v.y);
 	};
 
 	// Collision resolution
 	// simplified (physically not correct!)
 	this.bounceOff = function (ball) {
-		this.v.x  = -this.v.x;
-		this.v.y  = -this.v.y;
-		ball.v.x  = -ball.v.x;
-		ball.v.y  = -ball.v.y;
+		this.v.x = -this.v.x;
+		this.v.y = -this.v.y;
+		ball.v.x = -ball.v.x;
+		ball.v.y = -ball.v.y;
 
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
-		if(ball.s==1&&this.s==0){
-			this.s=1;
+		if (ball.s == 1 && this.s == 0) {
+			this.s = 1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
+			this.patner = ball;
 		}
 
-		if(this.s==1&&ball.s==0){
-			ball.s=1;
+		if (this.s == 1 && ball.s == 0) {
+			ball.s = 1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
+			ball.partner = this;
 		}
 	};
 	this.bounceOffVerticalWall = function () {
@@ -287,7 +298,7 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	If FIRST one is null, that means vertical wall collision.
 	If SECOND is null, that means horizontal wall collision.
 */
-function SimEvent (time, a, b) {
+function SimEvent(time, a, b) {
 	this.time = time;
 	this.a = a;
 	this.b = b;
@@ -306,17 +317,17 @@ function SimEvent (time, a, b) {
 		}
 		if (a === null) { //vertical wall
 			log += 'Validating vertical wall.\n';
-			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime +  b.timeToHitVerticalWall()).toFixed(4) + '\n'
+			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime + b.timeToHitVerticalWall()).toFixed(4) + '\n'
 			//console.log(log);
 			return this.time.toFixed(4) === (simTime + b.timeToHitVerticalWall()).toFixed(4);
 		} else if (b === null) { //horizontal wall
 			log += 'Validating vertical wall.\n';
-			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime +  a.timeToHitVerticalWall()).toFixed(4) + '\n';
+			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime + a.timeToHitVerticalWall()).toFixed(4) + '\n';
 			//console.log(log);
 			return this.time.toFixed(4) === (simTime + a.timeToHitHorizontalWall()).toFixed(4);
 		} else { //particle-particle
 			log += 'Validating two-particle.\n';
-			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime +  a.timeToHit(b)).toFixed(4) + '\n';
+			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime + a.timeToHit(b)).toFixed(4) + '\n';
 			//console.log(log);
 			return this.time.toFixed(4) === (simTime + a.timeToHit(b)).toFixed(4);
 		}
@@ -336,7 +347,7 @@ function SimEvent (time, a, b) {
 /*
 	Sim constructor
 */
-function Sim (balls) {
+function Sim(balls) {
 	if (balls == null) {
 		throw new Error('Sim constructor requires array of balls');
 	}
@@ -422,7 +433,7 @@ function Sim (balls) {
 			balls[i].draw();
 
 		}
-		gcounter+=1;
+		gcounter += 1;
 	};
 
 	// 'Increment' the simulation by time dt
@@ -500,10 +511,9 @@ function Sim (balls) {
 	Generating initial states
 */
 var cl = CANVAS_WIDTH;
-function validateNewBall (balls, ball) {
-	if (	ball.p.x - ball.r <= 0 || ball.p.x + ball.r >= CANVAS_WIDTH
-		 ||	ball.p.y - ball.r <= 0 || ball.p.y + ball.r >= CANVAS_HEIGHT)
-		{ return false; }
+function validateNewBall(balls, ball) {
+	if (ball.p.x - ball.r <= 0 || ball.p.x + ball.r >= CANVAS_WIDTH
+		|| ball.p.y - ball.r <= 0 || ball.p.y + ball.r >= CANVAS_HEIGHT) { return false; }
 	var dx;
 	var dy;
 	var r;
@@ -511,14 +521,14 @@ function validateNewBall (balls, ball) {
 		dx = balls[i].p.x - ball.p.x;
 		dy = balls[i].p.y - ball.p.y;
 		r = balls[i].r + ball.r;
-		if (dx*dx + dy*dy <= r*r) { return false; }
+		if (dx * dx + dy * dy <= r * r) { return false; }
 	}
 	return true;
 }
-function posNeg () {
-	return Math.pow(-1, Math.floor(Math.random()*2));
+function posNeg() {
+	return Math.pow(-1, Math.floor(Math.random() * 2));
 }
-function generateBalls (params) {
+function generateBalls(params) {
 	var balls = [];
 	var newBall;
 	var badBallCounter = 0;
@@ -604,17 +614,97 @@ function generateBalls (params) {
 */
 
 var ms = 30;
-var dt = ms/1000;
+var dt = ms / 1000;
 var balls = [];
 var sim;
+var time = 0;
+var chart;
+
+function addEntries() {
+	chart.data.labels.push(time);
+
+	var updateArray = [];
+	updateArray.push(stateProxy.population);
+	updateArray.push(stateProxy.uninfected);
+	updateArray.push(stateProxy.infected);
+	updateArray.push(stateProxy.healed);
+
 
 function makeSim (populationSize, populationFixed, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
+
+  var c = 0; chart.data.datasets.forEach((dataset) => {
+		dataset.data.push(updateArray[c++]);
+	});
+
+	chart.update();
+}
+
+	stateProxy.root_population = populationSize
+	stateProxy.population = populationSize
 	stateProxy.infected = infectedSize
 	stateProxy.healed = 0
 	stateProxy.dead = 0
-	stateProxy.uninfected = populationSize-infectedSize;
+	stateProxy.uninfected = populationSize - infectedSize;
 	stateProxy.freeBeds = freeBeds;
 	stateProxy.diedBecauseOfNoBed = 0;
+
+	var ctx = document.getElementById('chart').getContext('2d');
+	chart = new Chart(ctx, {
+		// The type of chart we want to create
+		type: 'line',
+		beginAtZero: true,
+
+		// The data for our dataset
+		data: {
+			labels: [],
+			datasets: [{
+				label: 'Population',
+				backgroundColor: '#aa66cc',
+				borderColor: '#aa66cc',
+				fill: 0,
+				data: []
+			},{
+				label: 'Uninfected',
+				backgroundColor: '#ffbb33',
+				borderColor: '#ffbb33',
+				fill: 1,
+				data: []
+			},{
+				label: 'Infected',
+				backgroundColor: '#ff4444',
+				borderColor: '#ff4444',
+				fill: 2,
+				data: []
+			},{
+				label: 'Healed',
+				backgroundColor: '#00C851',
+				borderColor: '#00C851',
+				fill: 3,
+				data: []
+			}]
+		},
+
+		// Configuration options go here
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						suggestedMin: 0,
+						suggestedMax: stateProxy.root_population
+					}
+				}]
+			},
+			plugins: {
+				filler: {
+					propagate: true
+				}
+			}
+		}
+	});
+	time = 0;
+	chart.data.datasets.forEach((dataset) => {
+		dataset.data = [];
+	});
 
 	balls = generateBalls({
 		style: 'random',
@@ -631,18 +721,20 @@ function makeSim (populationSize, populationFixed, infectedSize, velocity, freeB
 }
 
 var interval, intervalActive;
-function activateInterval () {
+function activateInterval() {
 	if (!intervalActive) {
 		interval = window.setInterval(runSim, ms);
 		intervalActive = true;
 	}
 }
-function deactivateInterval () {
+function deactivateInterval() {
 	window.clearInterval(interval);
 	intervalActive = false;
 }
 
-function runSim () {
+function runSim() {
+	if(time++ % 7 === 0) addEntries();
+
 	sim.redraw();
 	try {
 		sim.simulate(dt);
@@ -655,9 +747,9 @@ function runSim () {
 var sliderPopulation = document.getElementById("populationRange");
 var outputPopulation = document.getElementById("populationSize");
 outputPopulation.innerHTML = sliderPopulation.value;
-sliderPopulation.oninput = function() {
+sliderPopulation.oninput = function () {
 	outputPopulation.innerHTML = this.value;
-  }
+}
 
 var sliderPopulationFixed = document.getElementById("populationFixedRange");
 var outputPopulationFixed = document.getElementById("populationFixed");
@@ -669,49 +761,49 @@ sliderPopulationFixed.oninput = function() {
 var sliderInfected = document.getElementById("infectedRange");
 var outputInfected = document.getElementById("infectedSize");
 outputInfected.innerHTML = sliderInfected.value;
-sliderInfected.oninput = function() {
+sliderInfected.oninput = function () {
 	outputInfected.innerHTML = this.value;
-  }
+}
 
 var sliderVelocity = document.getElementById("velocityRange");
 var outputVelocity = document.getElementById("velocity");
 outputVelocity.innerHTML = sliderVelocity.value;
-sliderVelocity.oninput = function() {
+sliderVelocity.oninput = function () {
 	outputVelocity.innerHTML = this.value;
 }
 
 var sliderHospital = document.getElementById("hospitalRange");
 var outputHospital = document.getElementById("hospital");
 outputHospital.innerHTML = sliderHospital.value;
-sliderHospital.oninput = function() {
+sliderHospital.oninput = function () {
 	outputHospital.innerHTML = this.value;
 }
 
 var sliderNeededHospital = document.getElementById("neededHospitalRange");
 var outputNeededHospital = document.getElementById("neededHospital");
 outputNeededHospital.innerHTML = sliderNeededHospital.value;
-sliderNeededHospital.oninput = function() {
+sliderNeededHospital.oninput = function () {
 	outputNeededHospital.innerHTML = this.value;
 }
 
 var sliderDeathRate = document.getElementById("deathRateRange");
 var outputDeathRate = document.getElementById("deathRate");
 outputDeathRate.innerHTML = sliderDeathRate.value;
-sliderDeathRate.oninput = function() {
+sliderDeathRate.oninput = function () {
 	outputDeathRate.innerHTML = this.value;
 }
 
 var sliderRecoveryTime = document.getElementById("recoveryTimeRange");
 var outputRecoveryTime = document.getElementById("recoveryTime");
 outputRecoveryTime.innerHTML = sliderRecoveryTime.value;
-sliderRecoveryTime.oninput = function() {
+sliderRecoveryTime.oninput = function () {
 	outputRecoveryTime.innerHTML = this.value;
 }
 
 var sliderHospitalTime = document.getElementById("hospitalTimeRange");
 var outputHospitalTime = document.getElementById("hospitalTime");
 outputHospitalTime.innerHTML = sliderHospitalTime.value;
-sliderHospitalTime.oninput = function() {
+sliderHospitalTime.oninput = function () {
 	outputHospitalTime.innerHTML = this.value;
 }
 
