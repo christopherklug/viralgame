@@ -474,26 +474,22 @@ function posNeg () {
 function generateBalls (params) {
 	var balls = [];
 	var newBall;
-	var speed = 50;
 	var badBallCounter = 0;
 	for (var i = 0; i < params.n; i++) {
-		if (params.r) {
-			newBall = new Ball(
-				Math.floor(Math.random()*cl),
-				Math.floor(Math.random()*cl),
-				posNeg()*Math.floor(Math.random()*speed),
-				posNeg()*Math.floor(Math.random()*speed),
-				params.r
-			);
-		} else {
-			newBall = new Ball(
-				Math.floor(Math.random()*cl),
-				Math.floor(Math.random()*cl),
-				posNeg()*Math.floor(Math.random()*100),
-				posNeg()*Math.floor(Math.random()*100),
-				2 + Math.floor(Math.random()*29)
-			);
-		}
+	
+		var min=0; 
+		var max=params.velocity;  
+		var vx = Math.random() * (+max - +min) + +min; 
+		var vy = Math.sqrt(Math.pow(params.velocity,2))
+
+		newBall = new Ball(
+			Math.floor(Math.random()*cl),
+			Math.floor(Math.random()*cl),
+			posNeg()*Math.floor(vx),
+			posNeg()*Math.floor(vy),
+			params.r
+		);
+
 		if (validateNewBall(balls, newBall)) {
 			balls.push(newBall);
 			badBallCounter = 0;
@@ -518,11 +514,12 @@ var dt = ms/1000;
 var balls = [];
 var sim;
 
-function makeSim (populationSize, infectedSize) {
+function makeSim (populationSize, infectedSize, velocity) {
 	balls = generateBalls({
 		style: 'random',
 		n: populationSize,
-		r: 5})
+		r: 5,
+		velocity: velocity})
 
 	sim = new Sim(balls);
 }
@@ -591,13 +588,13 @@ sliderDeathRate.oninput = function() {
 	outputDeathRate.innerHTML = this.value;
 }
 
-makeSim(sliderPopulation.value, sliderInfected.value);
+makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value);
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
-	makeSim(sliderPopulation.value, sliderInfected.value);
+	makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value);
 	sim.redraw();
 });
