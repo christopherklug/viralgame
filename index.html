@@ -4,11 +4,41 @@
   <meta charset="UTF-8">
   <title>Viral game</title>
   <link rel="stylesheet" href="./style.css">
-
 </head>
 <body>
 <!-- partial:index.partial.html -->
 <canvas id="canvas"></canvas>
+
+<table>
+  <tbody>
+  <tr>
+  <td>uninfected </td>
+  <td>&nbsp;<span id="statUninfected"></span></td>
+  </tr>
+  <tr>
+  <td>&nbsp;infected</td>
+  <td>&nbsp;<span id="statInfected"></span></td>
+  </tr>
+  <tr>
+  <td>&nbsp;healed</td>
+  <td>&nbsp;<span id="statHealed"></span></td>
+  </tr>
+  <tr>
+  <td>&nbsp;died</td>
+  <td>&nbsp;<span id="statDied"></span></td>
+  </tr>
+  <tr>
+  <td>&nbsp;free beds</td>
+  <td>&nbsp;<span id="statFreeBeds"></span></td>
+  </tr>
+  <tr>
+  <td>&nbsp;beds needed</td>
+  <td>&nbsp;</td>
+  </tr>
+  </tbody>
+  </table>
+  <p>&nbsp;</p>
+
 <div class="slidecontainer">
   <p>Population: <span id="populationSize"></span></p>
   <input type="range" min="1" max="1024" value="50" class="slider" id="populationRange">

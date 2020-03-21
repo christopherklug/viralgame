@@ -11,7 +11,31 @@ canvas.style.marginTop = '20px';
 
 
 var gcounter = 0;
-var stateCount = {uninfected: 0, infected: 0, healed: 0, dead: 0}
+var stateCount = {uninfected: 0, infected: 0, healed: 0, dead: 0, freeBeds: 0}
+
+var stateProxy = new Proxy(stateCount, {
+	set: function (target, key, value) {
+		target[key] = value;
+
+		var outputStatUninfected = document.getElementById("statUninfected");
+		outputStatUninfected.innerHTML = stateCount.uninfected
+
+		var outputStatInfected = document.getElementById("statInfected");
+		outputStatInfected.innerHTML = stateCount.infected
+
+		var outputStatHealed = document.getElementById("statHealed");
+		outputStatHealed.innerHTML = stateCount.healed
+
+		var outputStatDied = document.getElementById("statDied");
+		outputStatDied.innerHTML = stateCount.dead
+
+		var outputStatFreeBeds = document.getElementById("statFreeBeds");
+		outputStatFreeBeds.innerHTML = stateCount.freeBeds
+		
+		return true;
+	}
+  });
+  
 
 /*
 	Minimum Priority Queue (MinPQ) constructor
@@ -91,6 +115,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.r = r;
 	this.healtimer = 200;
 
+	var s = 0
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
 	/*var sick = Math.random()
 
@@ -104,8 +129,8 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 	if(posX<50&&posY<50){
 		this.s=1;
-		stateCount.infected+=1;
-		stateCount.uninfected-=1;
+		stateProxy.infected+=1;
+		stateProxy.uninfected-=1;
 	}
 	else this.s=0;
 
@@ -135,13 +160,13 @@ function Ball (posX, posY, velX, velY, r, m) {
 			if(this.healtimer<=0){
 				if(Math.random()>0.05){
 					this.s = 2;
-					stateCount.healed+=1;
-					stateCount.infected-=1;
+					stateProxy.healed+=1;
+					stateProxy.infected-=1;
 				}
 				else{
 					this.s = 3;
-					stateCount.dead+=1;
-					stateCount.healed-=1;
+					stateProxy.dead+=1;
+					stateProxy.healed-=1;
 				}
 			}
 		}
@@ -226,14 +251,14 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 		if(ball.s==1&&this.s!=2){
 			this.s=1;
-			stateCount.infected+=1;
-			stateCount.uninfected-=1;
+			stateProxy.infected+=1;
+			stateProxy.uninfected-=1;
 		}
 
 		if(this.s==1&&ball.s!=2){
 			ball.s=1;
-			stateCount.infected+=1;
-			stateCount.uninfected-=1;
+			stateProxy.infected+=1;
+			stateProxy.uninfected-=1;
 		}
 		/*if(ball.s==1){
 			if(this.s=0){
@@ -498,6 +523,8 @@ function generateBalls (params) {
 	var balls = [];
 	var newBall;
 	var badBallCounter = 0;
+	var infectedCreated = 0;
+
 	for (var i = 0; i < params.n; i++) {
 	
 		var min=0; 
@@ -514,6 +541,10 @@ function generateBalls (params) {
 		);
 
 		if (validateNewBall(balls, newBall)) {
+			if(infectedCreated<params.infected) {
+				infectedCreated++
+				newBall.s = 1
+			}
 			balls.push(newBall);
 			badBallCounter = 0;
 		} else {
@@ -537,12 +568,16 @@ var dt = ms/1000;
 var balls = [];
 var sim;
 
-function makeSim (populationSize, infectedSize, velocity) {
+function makeSim (populationSize, infectedSize, velocity, freeBeds) {
+	stateProxy.uninfected = populationSize-infectedSize;
+	stateProxy.freeBeds = freeBeds;
+
 	balls = generateBalls({
 		style: 'random',
 		n: populationSize,
 		r: 5,
-		velocity: velocity})
+		velocity: velocity,
+		infected: infectedSize})
 
 	sim = new Sim(balls);
 }
@@ -611,13 +646,13 @@ sliderDeathRate.oninput = function() {
 	outputDeathRate.innerHTML = this.value;
 }
 
-makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value);
+makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value,sliderHospital.value );
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
-	makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value);
+	makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value,sliderHospital.value );
 	sim.redraw();
 });
