@@ -535,6 +535,7 @@ var balls = [];
 var sim;
 
 function makeSim (populationSize, infectedSize, velocity, freeBeds, recoveryTime) {
+	stateProxy.population = populationSize
 	stateProxy.infected = infectedSize
 	stateProxy.healed = 0
 	stateProxy.dead = 0
