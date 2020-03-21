@@ -109,20 +109,17 @@ function MinPQ () {
 /*
 	Ball constructor
 */
-function Ball (posX, posY, velX, velY, r, m) {
+function Ball (posX, posY, velX, velY, r, recoveryTime) {
 	this.p = {x: posX, y: posY};
 	this.v = {x: velX, y: velY};
 	this.r = r;
-	this.healtimer = 200;
+	this.healtimer = recoveryTime;
 
 	var s = 0
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
 
-	if (m != undefined) {
-		this.m = m;
-	} else {
-		this.m = Math.ceil(Math.PI*r*r);
-	}
+	var m = Math.ceil(Math.PI*r*r);
+
 
 	// Basic move/draw
 	this.move = function (dt) {
@@ -502,7 +499,8 @@ function generateBalls (params) {
 			Math.floor(Math.random()*CANVAS_HEIGHT),
 			posNeg()*Math.floor(vx),
 			posNeg()*Math.floor(vy),
-			params.r
+			params.r,
+			params.recoveryTime
 		);
 
 		if (validateNewBall(balls, newBall)) {
@@ -536,7 +534,7 @@ var dt = ms/1000;
 var balls = [];
 var sim;
 
-function makeSim (populationSize, infectedSize, velocity, freeBeds) {
+function makeSim (populationSize, infectedSize, velocity, freeBeds, recoveryTime) {
 	stateProxy.infected = infectedSize
 	stateProxy.healed = 0
 	stateProxy.dead = 0
@@ -548,7 +546,9 @@ function makeSim (populationSize, infectedSize, velocity, freeBeds) {
 		n: populationSize,
 		r: 5,
 		velocity: velocity,
-		infected: infectedSize})
+		infected: infectedSize,
+		recoveryTime: recoveryTime
+	})
 
 	sim = new Sim(balls);
 }
@@ -631,13 +631,13 @@ sliderHospitalTime.oninput = function() {
 	outputHospitalTime.innerHTML = this.value;
 }
 
-makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value) );
+makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value) );
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
-	makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value,sliderHospital.value );
+	makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value) );
 	sim.redraw();
 });
