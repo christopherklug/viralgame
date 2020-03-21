@@ -10,6 +10,8 @@ var diff = document.documentElement.clientHeight - CANVAS_LENGTH;
 canvas.style.marginTop = '20px';
 
 
+var gcounter = 0;
+
 /*
 	Minimum Priority Queue (MinPQ) constructor
 */
@@ -108,13 +110,16 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 	// Basic move/draw
 	this.move = function (dt) {
+
+
+
 		this.p.x = this.p.x + this.v.x*dt;
 		this.p.y = this.p.y + this.v.y*dt;
 	};
 	this.draw = function () {
 		ctx.beginPath();
 		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
-		ctx.fill();
+
 
 		//die Farbe ist unterschiedlich je nach Status
 		if(this.s == false){
@@ -124,6 +129,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 		else{
 			ctx.fillStyle = "red";
 		}
+		ctx.fill();
 	};
 
 	// Equality comparator
@@ -335,6 +341,7 @@ function Sim (balls) {
 		for (var i = 0; i < this.balls.length; i++) {
 			balls[i].draw();
 		}
+		gcounter+=0.01;
 	};
 
 	// 'Increment' the simulation by time dt
@@ -470,17 +477,18 @@ function generateBalls (params) {
 /*
 	Running the simulation
 */
+
 var ms = 30;
 var dt = ms/1000;
 var balls = [];
 var sim;
-var population = 128;
+var population = 300;
 
 function makeSim () {
 	balls = generateBalls({
 		style: 'random',
 		n: population,
-		r: 7})
+		r: 5})
 
 	sim = new Sim(balls);
 }
