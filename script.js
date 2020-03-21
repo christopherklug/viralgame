@@ -533,39 +533,76 @@ function generateBalls(params) {
 	var newBall;
 	var badBallCounter = 0;
 	var infectedCreated = 0;
+	var fixedCreated = 0;
+
+	var partFixed = Math.floor((params.populationFixed/params.n)*params.infected)
+	var partMobile = params.infected-partFixed
 
 	for (var i = 0; i < params.n; i++) {
-
 		var min=0;
 		var max=params.velocity;
 		var vx = Math.random() * (+max - +min) + +min;
 		var vy = Math.sqrt(Math.pow(params.velocity,2))
 
-		newBall = new Ball(
-			Math.floor(Math.random() * CANVAS_WIDTH),
-			Math.floor(Math.random() * CANVAS_HEIGHT),
-			posNeg() * Math.floor(vx),
-			posNeg() * Math.floor(vy),
-			params.r,
-			params.recoveryTime,
-			params.hospitalTime
-		);
+		if(fixedCreated < params.populationFixed )
+		{
+			newBall = new Ball(
+				Math.floor(Math.random()*CANVAS_WIDTH),
+				Math.floor(Math.random()*CANVAS_HEIGHT),
+				0,
+				0,
+				params.r,
+				params.recoveryTime,
+				params.hospitalTime
+			);
 
-		if (validateNewBall(balls, newBall)) {
-			if (infectedCreated < params.infected) {
-				infectedCreated++
-				newBall.s = 1
+			if (validateNewBall(balls, newBall)) {
+				if(infectedCreated<partFixed) {
+					infectedCreated++
+					newBall.s = 1
+				}else
+				{
+				newBall.s=0
+				}
+				fixedCreated++
+				balls.push(newBall);
+				badBallCounter = 0;
 			} else {
-				newBall.s = 0
+				if (++badBallCounter > 99) {
+					console.log('Too many bad balls in random ball generator');
+					return [];
+				}
+				i--;
 			}
-			balls.push(newBall);
-			badBallCounter = 0;
-		} else {
-			if (++badBallCounter > 99) {
-				console.log('Too many bad balls in random ball generator');
-				return [];
+		}
+		else
+		{
+			newBall = new Ball(
+				Math.floor(Math.random()*CANVAS_WIDTH),
+				Math.floor(Math.random()*CANVAS_HEIGHT),
+				posNeg()*Math.floor(vx),
+				posNeg()*Math.floor(vy),
+				params.r,
+				params.recoveryTime,
+				params.hospitalTime
+			);
+			if (validateNewBall(balls, newBall)) {
+				if(infectedCreated<params.infected) {
+					infectedCreated++
+					newBall.s = 1
+				}else
+				{
+				newBall.s=0
+				}
+				balls.push(newBall);
+				badBallCounter = 0;
+			} else {
+				if (++badBallCounter > 99) {
+					console.log('Too many bad balls in random ball generator');
+					return [];
+				}
+				i--;
 			}
-			i--;
 		}
 	}
 	return balls;
@@ -592,14 +629,15 @@ function addEntries() {
 	updateArray.push(stateProxy.infected);
 	updateArray.push(stateProxy.healed);
 
-	var c = 0; chart.data.datasets.forEach((dataset) => {
+
+function makeSim (populationSize, populationFixed, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
+
+  var c = 0; chart.data.datasets.forEach((dataset) => {
 		dataset.data.push(updateArray[c++]);
 	});
 
 	chart.update();
 }
-
-function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
 
 	stateProxy.root_population = populationSize
 	stateProxy.population = populationSize
@@ -675,7 +713,8 @@ function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime,
 		velocity: velocity,
 		infected: infectedSize,
 		recoveryTime: recoveryTime,
-		hospitalTime: hospitalTime
+		hospitalTime: hospitalTime,
+		populationFixed: populationFixed
 	})
 
 	sim = new Sim(balls);
@@ -711,6 +750,13 @@ outputPopulation.innerHTML = sliderPopulation.value;
 sliderPopulation.oninput = function () {
 	outputPopulation.innerHTML = this.value;
 }
+
+var sliderPopulationFixed = document.getElementById("populationFixedRange");
+var outputPopulationFixed = document.getElementById("populationFixed");
+outputPopulationFixed.innerHTML = sliderPopulationFixed.value;
+sliderPopulationFixed.oninput = function() {
+	outputPopulationFixed.innerHTML = this.value;
+  }
 
 var sliderInfected = document.getElementById("infectedRange");
 var outputInfected = document.getElementById("infectedSize");
@@ -761,13 +807,13 @@ sliderHospitalTime.oninput = function () {
 	outputHospitalTime.innerHTML = this.value;
 }
 
-makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value), parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value));
+makeSim(parseInt(sliderPopulation.value), parseInt(sliderPopulationFixed.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value) );
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
-	makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value), parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value));
+	makeSim(parseInt(sliderPopulation.value), parseInt(sliderPopulationFixed.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value) );
 	sim.redraw();
 });
