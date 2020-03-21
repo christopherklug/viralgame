@@ -87,10 +87,12 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.v = {x: velX, y: velY};
 	this.r = r;
 
+	//s meint den Status des punktes (infiziert/nichtinfiziert)
 	var sick = Math.random()
 	this.s;
 
-	if(sick<0.1){
+	//5% sind infiziert
+	if(sick<0.05){
 		this.s=true;
 	}
 	else{
@@ -114,6 +116,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
 		ctx.fill();
 
+		//die Farbe ist unterschiedlich je nach Status
 		if(this.s == false){
 			ctx.fillStyle = "blue";
 		}
@@ -167,21 +170,14 @@ function Ball (posX, posY, velX, velY, r, m) {
 	};
 
 	// Collision resolution
+	// simplified (physically not correct!)
 	this.bounceOff = function (ball) {
-		var dpx = ball.p.x - this.p.x;
-		var dpy = ball.p.y - this.p.y;
-		var dvx = ball.v.x - this.v.x;
-		var dvy = ball.v.y - this.v.y;
-		var dpdv = dpx*dvx + dpy*dvy;
-		var R = this.r + ball.r;
-		var J = 2*this.m*ball.m*dpdv/((this.m + ball.m)*R);
-		var Jx = J*dpx/R;
-		var Jy = J*dpy/R;
-		this.v.x += Jx/this.m;
-		this.v.y += Jy/this.m;
-		ball.v.x -= Jx/ball.m;
-		ball.v.y -= Jy/ball.m;
+		this.v.x  = -this.v.x;
+		this.v.y  = -this.v.y;
+		ball.v.x  = -ball.v.x;
+		ball.v.y  = -ball.v.y;
 
+		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
 		if(ball.s==true){
 			this.s=true
 		}
@@ -189,7 +185,6 @@ function Ball (posX, posY, velX, velY, r, m) {
 		if(this.s==true){
 			ball.s=true
 		}
-
 	};
 	this.bounceOffVerticalWall = function () {
 		this.v.x = -this.v.x;
