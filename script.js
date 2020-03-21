@@ -474,11 +474,13 @@ var ms = 30;
 var dt = ms/1000;
 var balls = [];
 var sim;
+var population = 128;
+
 function makeSim () {
 	balls = generateBalls({
 		style: 'random',
-		n: Math.floor(100 + Math.random()*100),
-		r: Math.floor(3 + Math.random()*10)})
+		n: population,
+		r: 7})
 
 	sim = new Sim(balls);
 }
