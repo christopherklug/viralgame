@@ -87,10 +87,12 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.v = {x: velX, y: velY};
 	this.r = r;
 
+	//s meint den Status des punktes (infiziert/nichtinfiziert)
 	var sick = Math.random()
 	this.s;
 
-	if(sick<0.1){
+	//5% sind infiziert
+	if(sick<0.05){
 		this.s=true;
 	}
 	else{
@@ -114,6 +116,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
 		ctx.fill();
 
+		//die Farbe ist unterschiedlich je nach Status
 		if(this.s == false){
 			ctx.fillStyle = "blue";
 		}
@@ -174,7 +177,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ball.v.x  = -ball.v.x;
 		ball.v.y  = -ball.v.y;
 
-
+		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
 		if(ball.s==true){
 			this.s=true
 		}
