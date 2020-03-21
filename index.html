@@ -37,7 +37,7 @@
           <th>healed</th>
           <th>died</th>
           <th>free beds</th>
-          <th>needed beds</th>
+          <th>died because no bed</th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +47,7 @@
           <td><span id="statHealed"></span></td>
           <td><span id="statDied"></span></td>
           <td><span id="statFreeBeds"></span></td>
-          <td><span id="statNeededBeds"></span></td>
+          <td><span id="statDiedBecauseOfNoBed"></span></td>
         </tr>
       </tbody>
     </table>
@@ -55,21 +55,21 @@
 
     <div class="slidecontainer">
       <p>Population: <span id="populationSize"></span></p>
-      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="populationRange">
+      <input type="range" min="1" max="1024" value="350" class="custom-range slider" id="populationRange">
       <p>Infected (start): <span id="infectedSize"></span></p>
       <input type="range" min="1" max="1024" value="10" class="custom-range slider" id="infectedRange">
       <p>Velocity: <span id="velocity"></span></p>
-      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="velocityRange">
+      <input type="range" min="1" max="1024" value="100" class="custom-range slider" id="velocityRange">
       <p>Beds in Hospital: <span id="hospital"></span></p>
       <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="hospitalRange">
       <p>Need for hospital (%, otherwise dead): <span id="neededHospital"></span></p>
-      <input type="range" min="0" max="100" value="5" class="custom-range slider" id="neededHospitalRange">
+      <input type="range" min="0" max="100" value="50" class="custom-range slider" id="neededHospitalRange">
       <p>Death rate in Hospital (%): <span id="deathRate"></span></p>
       <input type="range" min="0" max="100" value="3" class="custom-range slider" id="deathRateRange">
       <p>Time to recovery: <span id="recoveryTime"></span></p>
-      <input type="range" min="0" max="100" value="3" class="custom-range slider" id="recoveryTimeRange">
+      <input type="range" min="0" max="100" value="100" class="custom-range slider" id="recoveryTimeRange">
       <p>Time in hospital: <span id="hospitalTime"></span></p>
-      <input type="range" min="0" max="100" value="3" class="custom-range slider" id="hospitalTimeRange">
+      <input type="range" min="0" max="100" value="100" class="custom-range slider" id="hospitalTimeRange">
     </div>
     <div id="button-row" class="row">
       <input type="button" class="form-control col-sm" id="start" value="Start"></input>
