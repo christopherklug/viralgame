@@ -139,13 +139,13 @@ function Ball (posX, posY, velX, velY, r, m) {
 			if(this.healtimer==0){
 				if(Math.random()>0.05){
 					this.s = 2;
-					stateProxy.healed+=1;
-					stateProxy.infected-=1;
+					stateProxy.healed+=parseInt(1);
+					stateProxy.infected-=parseInt(1);
 				}
 				else{
 					this.s = 3;
-					stateProxy.dead+=1;
-					stateProxy.healed-=1;
+					stateProxy.dead+=parseInt(1);
+					stateProxy.infected-=parseInt(1);
 				}
 			}
 		}
@@ -226,16 +226,16 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ball.v.y  = -ball.v.y;
 
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
-		if(ball.s==1&&this.s!=2){
+		if(ball.s==1&&this.s==0){
 			this.s=1;
-			stateProxy.infected+=1;
-			stateProxy.uninfected-=1;
+			stateProxy.infected+=parseInt(1);
+			stateProxy.uninfected-=parseInt(1);
 		}
 
-		if(this.s==1&&ball.s!=2){
+		if(this.s==1&&ball.s==0){
 			ball.s=1;
-			stateProxy.infected+=1;
-			stateProxy.uninfected-=1;
+			stateProxy.infected+=parseInt(1);
+			stateProxy.uninfected-=parseInt(1);
 		}
 	};
 	this.bounceOffVerticalWall = function () {
@@ -508,8 +508,7 @@ function generateBalls (params) {
 		if (validateNewBall(balls, newBall)) {
 			if(infectedCreated<params.infected) {
 				infectedCreated++
-				newBall.s = 1
-			
+				newBall.s = 1	
 			}else
 			{
 			newBall.s=0
@@ -538,6 +537,9 @@ var balls = [];
 var sim;
 
 function makeSim (populationSize, infectedSize, velocity, freeBeds) {
+	stateProxy.infected = infectedSize
+	stateProxy.healed = 0
+	stateProxy.dead = 0
 	stateProxy.uninfected = populationSize-infectedSize;
 	stateProxy.freeBeds = freeBeds;
 
@@ -629,7 +631,7 @@ sliderHospitalTime.oninput = function() {
 	outputHospitalTime.innerHTML = this.value;
 }
 
-makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value,sliderHospital.value );
+makeSim(parseInt(sliderPopulation.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value) );
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
