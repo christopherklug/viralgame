@@ -139,13 +139,13 @@ function Ball (posX, posY, velX, velY, r, m) {
 			if(this.healtimer==0){
 				if(Math.random()>0.05){
 					this.s = 2;
-					stateProxy.healed+=parseInt(1);
-					stateProxy.infected-=parseInt(1);
+					stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
+					stateProxy.infected = parseInt(stateProxy.infected) - parseInt(1);
 				}
 				else{
 					this.s = 3;
-					stateProxy.dead+=parseInt(1);
-					stateProxy.infected-=parseInt(1);
+					stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1);
+					stateProxy.infected = parseInt(stateProxy.infected) - parseInt(1);
 				}
 			}
 		}
@@ -228,14 +228,14 @@ function Ball (posX, posY, velX, velY, r, m) {
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
 		if(ball.s==1&&this.s==0){
 			this.s=1;
-			stateProxy.infected+=parseInt(1);
-			stateProxy.uninfected-=parseInt(1);
+			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
+			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
 		}
 
 		if(this.s==1&&ball.s==0){
 			ball.s=1;
-			stateProxy.infected+=parseInt(1);
-			stateProxy.uninfected-=parseInt(1);
+			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
+			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
 		}
 	};
 	this.bounceOffVerticalWall = function () {
