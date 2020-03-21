@@ -115,6 +115,7 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	this.r = r;
 	this.healtimer = recoveryTime;
 	this.hospitaltimer = hospitalTime;
+	this.partner = null;
 
 	var s = 0 // 0:uninfected, 1:infected, 2:healed, 3: dead, 4:hospital
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
@@ -206,6 +207,14 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 		}
 
 		ctx.fill();
+
+		if(this.partner!=null)
+		{
+			ctx.beginPath();
+			ctx.moveTo(this.p.x, this.p.y);
+			ctx.lineTo(this.partner.p.x, this.partner.p.y);
+			ctx.stroke();
+		}
 	};
 
 	// Equality comparator
@@ -264,12 +273,14 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			this.s=1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
+			this.patner = ball;
 		}
 
 		if(this.s==1&&ball.s==0){
 			ball.s=1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
+			ball.partner = this;
 		}
 	};
 	this.bounceOffVerticalWall = function () {
