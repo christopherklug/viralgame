@@ -629,15 +629,14 @@ function addEntries() {
 	updateArray.push(stateProxy.infected);
 	updateArray.push(stateProxy.healed);
 
-
-function makeSim (populationSize, populationFixed, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
-
-  var c = 0; chart.data.datasets.forEach((dataset) => {
+	var c = 0; chart.data.datasets.forEach((dataset) => {
 		dataset.data.push(updateArray[c++]);
 	});
 
 	chart.update();
 }
+
+function makeSim (populationSize, populationFixed, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
 
 	stateProxy.root_population = populationSize
 	stateProxy.population = populationSize
@@ -710,6 +709,8 @@ function makeSim (populationSize, populationFixed, infectedSize, velocity, freeB
 	chart.data.datasets.forEach((dataset) => {
 		dataset.data = [];
 	});
+
+	
 
 	balls = generateBalls({
 		style: 'random',
