@@ -88,18 +88,23 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.p = {x: posX, y: posY};
 	this.v = {x: velX, y: velY};
 	this.r = r;
+	this.healtimer = 150;
 
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
-	var sick = Math.random()
-	this.s;
+	/*var sick = Math.random()
 
 	//5% sind infiziert
 	if(sick<0.05){
-		this.s=true;
+		this.s=1;
 	}
 	else{
-		this.s=false;
+		this.s=0;
+	}*/
+
+	if(posX<50&&posY<50){
+		this.s=1;
 	}
+	else this.s=0;
 
 
 	if (m != undefined) {
@@ -117,18 +122,33 @@ function Ball (posX, posY, velX, velY, r, m) {
 		this.p.y = this.p.y + this.v.y*dt;
 	};
 	this.draw = function () {
+
+		if(this.s == 1){
+			this.healtimer-=1;
+			if(this.healtimer<=0){
+				this.s = 2;
+			}
+		}
+
+
 		ctx.beginPath();
 		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
 
 
 		//die Farbe ist unterschiedlich je nach Status
-		if(this.s == false){
-			ctx.fillStyle = "blue";
-		}
 
-		else{
-			ctx.fillStyle = "red";
-		}
+		switch(this.s) {
+		  case 0:
+		    ctx.fillStyle = "black";
+		    break;
+			case 1:
+				ctx.fillStyle = "red";
+				break;
+			case 2:
+				ctx.fillStyle = "green";
+				break;
+			}
+
 		ctx.fill();
 	};
 
@@ -184,13 +204,27 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ball.v.y  = -ball.v.y;
 
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
-		if(ball.s==true){
-			this.s=true
+
+
+		if(ball.s==1&&this.s!=2){
+			this.s=1;
 		}
 
-		if(this.s==true){
-			ball.s=true
+		if(this.s==1&&ball.s!=2){
+			ball.s=1;
 		}
+		/*if(ball.s==1){
+			if(this.s=0){
+				this.s=1;
+			}
+		}
+
+		if(this.s==1){
+			if(ball.s=0){
+				ball.s=1;
+			}
+		}*/
+
 	};
 	this.bounceOffVerticalWall = function () {
 		this.v.x = -this.v.x;
@@ -341,7 +375,7 @@ function Sim (balls) {
 		for (var i = 0; i < this.balls.length; i++) {
 			balls[i].draw();
 		}
-		gcounter+=0.01;
+		gcounter+=1;
 	};
 
 	// 'Increment' the simulation by time dt
@@ -440,14 +474,15 @@ function posNeg () {
 function generateBalls (params) {
 	var balls = [];
 	var newBall;
+	var speed = 50;
 	var badBallCounter = 0;
 	for (var i = 0; i < params.n; i++) {
 		if (params.r) {
 			newBall = new Ball(
 				Math.floor(Math.random()*cl),
 				Math.floor(Math.random()*cl),
-				posNeg()*Math.floor(Math.random()*100),
-				posNeg()*Math.floor(Math.random()*100),
+				posNeg()*Math.floor(Math.random()*speed),
+				posNeg()*Math.floor(Math.random()*speed),
 				params.r
 			);
 		} else {
