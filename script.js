@@ -16,7 +16,7 @@ canvas.style.marginTop = '20px';
 function MinPQ () {
 	this.heap = [null];
 	this.n = 0;
-	
+
 	// MinPQ API
 	this.insert = function (key) {
 		this.heap.push(key);
@@ -25,13 +25,13 @@ function MinPQ () {
 		//console.log(this.heap);
 	};
 	this.viewMin = function () {
-		if (this.n < 1) { 
+		if (this.n < 1) {
 			return null;
 		}
 		return this.heap[1];
 	}
 	this.delMin = function () {
-		if (this.n < 1) { 
+		if (this.n < 1) {
 			throw new Error('Called delMin() on empty MinPQ');
 		}
 		//console.log('delete min, n=' + this.n)
@@ -43,7 +43,7 @@ function MinPQ () {
 	this.isEmpty = function () {
 		return (this.n === 0);
 	};
-	
+
 	// Heap helpers
 	this.swim = function (k) {
 		var j = Math.floor(k/2);
@@ -63,7 +63,7 @@ function MinPQ () {
 			j = 2*k;
 		}
 	};
-	
+
 	// Array compare and exchange
 	this.less = function (i, j) {
 		// Note: this is particular to the SimEvent object.
@@ -86,12 +86,24 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.p = {x: posX, y: posY};
 	this.v = {x: velX, y: velY};
 	this.r = r;
+
+	var sick = Math.random()
+	this.s;
+
+	if(sick<0.1){
+		this.s=true;
+	}
+	else{
+		this.s=false;
+	}
+
+
 	if (m != undefined) {
 		this.m = m;
 	} else {
 		this.m = Math.ceil(Math.PI*r*r);
 	}
-	
+
 	// Basic move/draw
 	this.move = function (dt) {
 		this.p.x = this.p.x + this.v.x*dt;
@@ -101,8 +113,16 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ctx.beginPath();
 		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
 		ctx.fill();
+
+		if(this.s == false){
+			ctx.fillStyle = "blue";
+		}
+
+		else{
+			ctx.fillStyle = "red";
+		}
 	};
-	
+
 	// Equality comparator
 	this.equals = function (ball) {
 		return (
@@ -113,7 +133,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 			this.r === ball.r
 		);
 	};
-	
+
 	// Collision prediction
 	this.timeToHit = function (ball) {
 		if (this.equals(ball)) { return Number.POSITIVE_INFINITY; }
@@ -145,7 +165,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 		}
 		return ((this.r - this.p.y)/this.v.y);
 	};
-	
+
 	// Collision resolution
 	this.bounceOff = function (ball) {
 		var dpx = ball.p.x - this.p.x;
@@ -161,6 +181,15 @@ function Ball (posX, posY, velX, velY, r, m) {
 		this.v.y += Jy/this.m;
 		ball.v.x -= Jx/ball.m;
 		ball.v.y -= Jy/ball.m;
+
+		if(ball.s==true){
+			this.s=true
+		}
+
+		if(this.s==true){
+			ball.s=true
+		}
+
 	};
 	this.bounceOffVerticalWall = function () {
 		this.v.x = -this.v.x;
@@ -186,7 +215,7 @@ function SimEvent (time, a, b) {
 	};
 	this.isValid = function (simTime) {
 		// Note: toFixed(4) is used to avoid potential floating-point
-		// accuracy errors 
+		// accuracy errors
 		var log = '';
 		// Note: this check forces only one event at a given instant
 		if (this.time < simTime) {
@@ -211,7 +240,7 @@ function SimEvent (time, a, b) {
 			return this.time.toFixed(4) === (simTime + a.timeToHit(b)).toFixed(4);
 		}
 	};
-	
+
 	///
 	/// TEMP FOR DEBUGGING:
 	///
@@ -235,11 +264,11 @@ function Sim (balls) {
 			throw new Error('Invalid ball passed to Sim constructor');
 		}
 	}
-	
+
 	this.time = 0;
 	this.balls = balls;
 	this.pq = new MinPQ();
-	
+
 	this.predictAll = function (ball) {
 		if (ball == null) { return; }
 		var dt;
@@ -250,12 +279,12 @@ function Sim (balls) {
 			// AND isValid() is complete.
 			//
 			//
-			
+
 			dt = ball.timeToHit(balls[i]);
 			if (!isFinite(dt) || dt <= 0) { continue; }
 			this.pq.insert(new SimEvent(this.time + dt, ball, balls[i]));
 			//console.log('Ball event inserted');
-			
+
 		}
 		dt = ball.timeToHitVerticalWall();
 		if (isFinite(dt) && dt > 0) {
@@ -278,11 +307,11 @@ function Sim (balls) {
 			// AND isValid() is complete.
 			//
 			//
-			
+
 			dt = ball.timeToHit(balls[i]);
 			if (!isFinite(dt) || dt <= 0) { continue; }
 			this.pq.insert(new SimEvent(this.time + dt, ball, balls[i]));
-			
+
 		}
 	};
 	this.predictVerticalWall = function (ball) {
@@ -301,48 +330,48 @@ function Sim (balls) {
 			this.pq.insert(new SimEvent(this.time + dt, ball, null));
 		}
 	};
-	
+
 	for (var i = 0; i < this.balls.length; i++) {
 		this.predictAll(this.balls[i]);
 	}
-	
+
 	this.redraw = function () {
 		ctx.clearRect(0, 0, CANVAS_LENGTH, CANVAS_LENGTH);
 		for (var i = 0; i < this.balls.length; i++) {
 			balls[i].draw();
 		}
 	};
-	
+
 	// 'Increment' the simulation by time dt
 	this.simulate = function (dt) {
 		var simLog = 'Start time: ' + this.time + '\n';
 		var end = this.time + dt;
 		var minEvent;
 		var inc;
-		
+
 		var counter = 0;
 		while (!this.pq.isEmpty()) {
 			// Check min event time. If outside time window, break.
-			// Otherwise, delete it. If not valid, continue. 
+			// Otherwise, delete it. If not valid, continue.
 			// Otherwise, process the event.
 			minEvent = this.pq.viewMin();
-			if (minEvent.time >= end) { 
+			if (minEvent.time >= end) {
 				simLog += 'No events in time window (min time: ' + minEvent.time + ')';
-				break; 
+				break;
 			}
 			this.pq.delMin();
-			if (!minEvent.isValid(this.time)) { 
+			if (!minEvent.isValid(this.time)) {
 				simLog += 'Invalid event: ' + minEvent.type() + '\n';
-				continue; 
+				continue;
 			}
-			
+
 			simLog += 'Valid event: ' + minEvent.type() + '; ';
 			inc = minEvent.time - this.time;
 			for (var i = 0; i < this.balls.length; i++) {
 				this.balls[i].move(inc);
 			}
 			this.time = minEvent.time;
-			
+
 			var a = minEvent.a;
 			var b = minEvent.b;
 			if (a !== null && b !== null) {
@@ -363,7 +392,7 @@ function Sim (balls) {
 				this.predictBalls(a);
 				this.predictHorizontalWall(a);
 			}
-			
+
 			/// TEMPORARY COUNTER
 			/// for debugging
 			/*counter++;
@@ -372,13 +401,13 @@ function Sim (balls) {
 				throw new Error('killed event process loop after ' + counter + ' executions');
 			}*/
 		}
-		
+
 		inc = end - this.time;
 		for (var i = 0; i < this.balls.length; i++) {
 			this.balls[i].move(inc);
 		}
 		this.time = end;
-		
+
 		//console.log(simLog);
 	};
 }
