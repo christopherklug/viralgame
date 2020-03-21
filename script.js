@@ -624,24 +624,28 @@ function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime,
 				backgroundColor: '#aa66cc',
 				borderColor: '#aa66cc',
 				fill: 0,
+				pointRadius:1,
 				data: []
 			},{
 				label: 'Uninfected',
 				backgroundColor: '#ffbb33',
 				borderColor: '#ffbb33',
 				fill: 1,
+				pointRadius:1,
 				data: []
 			},{
 				label: 'Infected',
 				backgroundColor: '#ff4444',
 				borderColor: '#ff4444',
 				fill: 2,
+				pointRadius:1,
 				data: []
 			},{
 				label: 'Healed',
 				backgroundColor: '#00C851',
 				borderColor: '#00C851',
 				fill: 3,
+				pointRadius:1,
 				data: []
 			}]
 		},
@@ -652,7 +656,8 @@ function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime,
 				yAxes: [{
 					ticks: {
 						suggestedMin: 0,
-						suggestedMax: stateProxy.root_population
+						suggestedMax: stateProxy.root_population,
+						stepSize: Math.round(stateProxy.root_population / 10)
 					}
 				}]
 			},
