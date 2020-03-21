@@ -172,6 +172,16 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 		stateProxy.population = parseInt(stateProxy.root_population) - parseInt(stateProxy.dead);
 
+		if(this.partner!=null)
+		{
+			ctx.beginPath();
+			ctx.moveTo(this.p.x, this.p.y);
+			ctx.lineTo(this.partner.p.x, this.partner.p.y);
+			ctx.lineWidth = 1;
+			ctx.strokeStyle = "#a6a6a6";
+			ctx.stroke();
+		}
+
 		ctx.beginPath();
 		if(this.s==4)
 		{
@@ -202,14 +212,6 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 		}
 
 		ctx.fill();
-
-		if(this.partner!=null)
-		{
-			ctx.beginPath();
-			ctx.moveTo(this.p.x, this.p.y);
-			ctx.lineTo(this.partner.p.x, this.partner.p.y);
-			ctx.stroke();
-		}
 	};
 
 	// Equality comparator
@@ -595,7 +597,7 @@ function addEntries() {
 }
 
 function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime, hospitalTime) {
-	
+
 	stateProxy.root_population = populationSize
 	stateProxy.population = populationSize
 	stateProxy.infected = infectedSize
@@ -690,7 +692,7 @@ function deactivateInterval() {
 
 function runSim() {
 	if(time++ % 7 === 0) addEntries();
-	
+
 	sim.redraw();
 	try {
 		sim.simulate(dt);
