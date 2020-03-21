@@ -563,6 +563,33 @@ sliderInfected.oninput = function() {
 	outputInfected.innerHTML = this.value;
   }
 
+var sliderVelocity = document.getElementById("velocityRange");
+var outputVelocity = document.getElementById("velocity");
+outputVelocity.innerHTML = sliderVelocity.value;
+sliderVelocity.oninput = function() {
+	outputVelocity.innerHTML = this.value;
+}
+
+var sliderHospital = document.getElementById("hospitalRange");
+var outputHospital = document.getElementById("hospital");
+outputHospital.innerHTML = sliderHospital.value;
+sliderHospital.oninput = function() {
+	outputHospital.innerHTML = this.value;
+}
+
+var sliderNeededHospital = document.getElementById("neededHospitalRange");
+var outputNeededHospital = document.getElementById("neededHospital");
+outputNeededHospital.innerHTML = sliderNeededHospital.value;
+sliderNeededHospital.oninput = function() {
+	outputNeededHospital.innerHTML = this.value;
+}
+
+var sliderDeathRate = document.getElementById("deathRateRange");
+var outputDeathRate = document.getElementById("deathRate");
+outputDeathRate.innerHTML = sliderDeathRate.value;
+sliderDeathRate.oninput = function() {
+	outputDeathRate.innerHTML = this.value;
+}
 
 makeSim(sliderPopulation.value, sliderInfected.value);
 sim.redraw();
