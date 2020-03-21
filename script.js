@@ -31,11 +31,11 @@ var stateProxy = new Proxy(stateCount, {
 
 		var outputStatFreeBeds = document.getElementById("statFreeBeds");
 		outputStatFreeBeds.innerHTML = stateCount.freeBeds
-		
+
 		return true;
 	}
   });
-  
+
 
 /*
 	Minimum Priority Queue (MinPQ) constructor
@@ -129,7 +129,7 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			this.p.y = this.p.y + this.v.y*dt;
 		}
 	};
-	
+
 	this.draw = function () {
 
 		if(this.s == 1){
@@ -174,11 +174,12 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 				}
 			}
 		}
-		
+
 		ctx.beginPath();
 		if(this.s==4)
-		{	
-			ctx.rect(this.p.x, this.p.y, this.r*3, this.r*3)
+		{
+			ctx.rect(this.p.x, this.p.y-this.r, this.r, this.r*3)
+			ctx.rect(this.p.x-this.r, this.p.y, this.r*3, this.r)
 		}
 		else
 		{
@@ -192,7 +193,7 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 				ctx.fillStyle = "black";
 				break;
 			case 1:
-				ctx.fillStyle = "red";
+				ctx.fillStyle = "#CC0000";
 				break;
 			case 2:
 				ctx.fillStyle = "green";
@@ -201,7 +202,7 @@ function Ball (posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 				ctx.fillStyle = "#ab1bb5";
 				break;
 			case 4:
-				ctx.fillStyle = "#630700";
+				ctx.fillStyle = "red";
 		}
 
 		ctx.fill();
@@ -524,10 +525,10 @@ function generateBalls (params) {
 	var infectedCreated = 0;
 
 	for (var i = 0; i < params.n; i++) {
-	
-		var min=0; 
-		var max=params.velocity;  
-		var vx = Math.random() * (+max - +min) + +min; 
+
+		var min=0;
+		var max=params.velocity;
+		var vx = Math.random() * (+max - +min) + +min;
 		var vy = Math.sqrt(Math.pow(params.velocity,2))
 
 		newBall = new Ball(
@@ -543,7 +544,7 @@ function generateBalls (params) {
 		if (validateNewBall(balls, newBall)) {
 			if(infectedCreated<params.infected) {
 				infectedCreated++
-				newBall.s = 1	
+				newBall.s = 1
 			}else
 			{
 			newBall.s=0
