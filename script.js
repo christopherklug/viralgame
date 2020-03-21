@@ -482,12 +482,11 @@ var ms = 30;
 var dt = ms/1000;
 var balls = [];
 var sim;
-var population = 300;
 
-function makeSim () {
+function makeSim (populationSize, infectedSize) {
 	balls = generateBalls({
 		style: 'random',
-		n: population,
+		n: populationSize,
 		r: 5})
 
 	sim = new Sim(balls);
@@ -515,12 +514,28 @@ function runSim () {
 	}
 }
 
-makeSim();
+var sliderPopulation = document.getElementById("populationRange");
+var outputPopulation = document.getElementById("populationSize");
+outputPopulation.innerHTML = sliderPopulation.value;
+sliderPopulation.oninput = function() {
+	outputPopulation.innerHTML = this.value;
+  }
+
+var sliderInfected = document.getElementById("infectedRange");
+var outputInfected = document.getElementById("infectedSize");
+outputInfected.innerHTML = sliderInfected.value;
+sliderInfected.oninput = function() {
+	outputInfected.innerHTML = this.value;
+  }
+
+
+makeSim(sliderPopulation.value, sliderInfected.value);
 sim.redraw();
 
 $('#stop').on('click', deactivateInterval);
 $('#start').on('click', activateInterval);
 $('#new').on('click', function () {
 	deactivateInterval();
+	makeSim(sliderPopulation.value, sliderInfected.value);
 	sim.redraw();
 });
