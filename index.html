@@ -49,15 +49,17 @@
     <div class="slidecontainer">
       <p>Population: <span id="populationSize"></span></p>
       <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="populationRange">
+      <p>People with fixed Position: <span id="populationFixed"></span></p>
+      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="populationFixedRange">
       <p>Infected (start): <span id="infectedSize"></span></p>
       <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="infectedRange">
       <p>Velocity: <span id="velocity"></span></p>
       <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="velocityRange">
       <p>Beds in Hospital: <span id="hospital"></span></p>
       <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="hospitalRange">
-      <p>Need for hospital (%, otherwise dead): <span id="neededHospital"></span></p>
+      <p>Need for hospital (probability in %, otherwise dead): <span id="neededHospital"></span></p>
       <input type="range" min="0" max="100" value="5" class="custom-range slider" id="neededHospitalRange">
-      <p>Death rate in Hospital (%): <span id="deathRate"></span></p>
+      <p>Death rate in Hospital (probability in %): <span id="deathRate"></span></p>
       <input type="range" min="0" max="100" value="3" class="custom-range slider" id="deathRateRange">
       <p>Time to recovery: <span id="recoveryTime"></span></p>
       <input type="range" min="0" max="100" value="3" class="custom-range slider" id="recoveryTimeRange">
