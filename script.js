@@ -88,11 +88,10 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.p = {x: posX, y: posY};
 	this.v = {x: velX, y: velY};
 	this.r = r;
-	this.healtimer = 200;
+	this.healtimer = 150;
 
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
-	var sick = Math.random()
-
+	/*var sick = Math.random()
 
 	//5% sind infiziert
 	if(sick<0.05){
@@ -100,7 +99,12 @@ function Ball (posX, posY, velX, velY, r, m) {
 	}
 	else{
 		this.s=0;
+	}*/
+
+	if(posX<50&&posY<50){
+		this.s=1;
 	}
+	else this.s=0;
 
 
 	if (m != undefined) {
@@ -470,7 +474,7 @@ function posNeg () {
 function generateBalls (params) {
 	var balls = [];
 	var newBall;
-	var speed = 30;
+	var speed = 50;
 	var badBallCounter = 0;
 	for (var i = 0; i < params.n; i++) {
 		if (params.r) {
