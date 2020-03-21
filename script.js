@@ -11,6 +11,7 @@ canvas.style.marginTop = '20px';
 
 
 var gcounter = 0;
+var stateCount = [populationSize.value,0,0,0];
 
 /*
 	Minimum Priority Queue (MinPQ) constructor
@@ -88,7 +89,7 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.p = {x: posX, y: posY};
 	this.v = {x: velX, y: velY};
 	this.r = r;
-	this.healtimer = 150;
+	this.healtimer = 200;
 
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
 	/*var sick = Math.random()
@@ -103,6 +104,8 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 	if(posX<50&&posY<50){
 		this.s=1;
+		stateCount[1]+=1;
+		stateCount[0]-=1;
 	}
 	else this.s=0;
 
@@ -116,17 +119,30 @@ function Ball (posX, posY, velX, velY, r, m) {
 	// Basic move/draw
 	this.move = function (dt) {
 
+	//this.p.x = this.p.x + this.v.x*dt;
+	//this.p.y = this.p.y + this.v.y*dt;
+	//console.log("vx:"+this.v.x+" vy:"+this.v.y);
+	if(this.s!=3){
+	this.p.x = this.p.x + this.v.x*dt;
+	this.p.y = this.p.y + this.v.y*dt;
+	}
 
-
-		this.p.x = this.p.x + this.v.x*dt;
-		this.p.y = this.p.y + this.v.y*dt;
 	};
 	this.draw = function () {
 
 		if(this.s == 1){
 			this.healtimer-=1;
 			if(this.healtimer<=0){
-				this.s = 2;
+				if(Math.random()>0.05){
+					this.s = 2;
+					stateCount[2]+=1;
+					stateCount[1]-=1;
+				}
+				else{
+					this.s = 3;
+					stateCount[3]+=1;
+					stateCount[2]-=1;
+				}
 			}
 		}
 
@@ -147,6 +163,8 @@ function Ball (posX, posY, velX, velY, r, m) {
 			case 2:
 				ctx.fillStyle = "green";
 				break;
+			case 3:
+				ctx.fillStyle = "#ab1bb5";
 			}
 
 		ctx.fill();
@@ -208,10 +226,14 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 		if(ball.s==1&&this.s!=2){
 			this.s=1;
+			stateCount[1]+=1;
+			stateCount[0]-=1;
 		}
 
 		if(this.s==1&&ball.s!=2){
 			ball.s=1;
+			stateCount[1]+=1;
+			stateCount[0]-=1;
 		}
 		/*if(ball.s==1){
 			if(this.s=0){
@@ -374,6 +396,7 @@ function Sim (balls) {
 		ctx.clearRect(0, 0, CANVAS_LENGTH, CANVAS_LENGTH);
 		for (var i = 0; i < this.balls.length; i++) {
 			balls[i].draw();
+
 		}
 		gcounter+=1;
 	};
