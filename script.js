@@ -32,6 +32,9 @@ var stateProxy = new Proxy(stateCount, {
 		var outputStatFreeBeds = document.getElementById("statFreeBeds");
 		outputStatFreeBeds.innerHTML = stateCount.freeBeds
 
+		var outputStatFreeBeds = document.getElementById("statDiedBecauseOfNoBed");
+		outputStatFreeBeds.innerHTML = stateCount.diedBecauseOfNoBed
+
 		return true;
 	}
 });
@@ -186,19 +189,19 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 		switch (this.s) {
 			case 0:
-				ctx.fillStyle = "black";
+				ctx.fillStyle = "#ffbb33";
 				break;
 			case 1:
-				ctx.fillStyle = "#CC0000";
+				ctx.fillStyle = "#ff4444";
 				break;
 			case 2:
-				ctx.fillStyle = "green";
+				ctx.fillStyle = "#00C851";
 				break;
 			case 3:
-				ctx.fillStyle = "#ab1bb5";
+				ctx.fillStyle = "#333";
 				break;
 			case 4:
-				ctx.fillStyle = "red";
+				ctx.fillStyle = "#ff4444";
 		}
 
 		ctx.fill();
