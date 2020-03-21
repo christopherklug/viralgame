@@ -1,64 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Viral game</title>
   <link rel="stylesheet" href="./style.css">
+
+   <!-- partial -->
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+   <script src="./script.js" defer="defer"></script>
 </head>
+
 <body>
-<!-- partial:index.partial.html -->
-<canvas id="canvas"></canvas>
+  <!-- partial:index.partial.html -->
 
-<table>
-  <tbody>
-  <tr>
-  <td>uninfected </td>
-  <td>&nbsp;<span id="statUninfected"></span></td>
-  </tr>
-  <tr>
-  <td>&nbsp;infected</td>
-  <td>&nbsp;<span id="statInfected"></span></td>
-  </tr>
-  <tr>
-  <td>&nbsp;healed</td>
-  <td>&nbsp;<span id="statHealed"></span></td>
-  </tr>
-  <tr>
-  <td>&nbsp;died</td>
-  <td>&nbsp;<span id="statDied"></span></td>
-  </tr>
-  <tr>
-  <td>&nbsp;free beds</td>
-  <td>&nbsp;<span id="statFreeBeds"></span></td>
-  </tr>
-  <tr>
-  <td>&nbsp;beds needed</td>
-  <td>&nbsp;</td>
-  </tr>
-  </tbody>
-  </table>
-  <p>&nbsp;</p>
+  <div class="canvas_container">
+    <canvas id="canvas"></canvas>
+  </div>
 
-<div class="slidecontainer">
-  <p>Population: <span id="populationSize"></span></p>
-  <input type="range" min="1" max="1024" value="50" class="slider" id="populationRange">
-  <p>Infected (start): <span id="infectedSize"></span></p>
-  <input type="range" min="1" max="1024" value="50" class="slider" id="infectedRange">
-  <p>Velocity: <span id="velocity"></span></p>
-  <input type="range" min="1" max="1024" value="50" class="slider" id="velocityRange">
-  <p>Beds in Hospital: <span id="hospital"></span></p>
-  <input type="range" min="1" max="1024" value="50" class="slider" id="hospitalRange">
-  <p>Need for hospital (%, otherwise dead): <span id="neededHospital"></span></p>
-  <input type="range" min="0" max="100" value="5" class="slider" id="neededHospitalRange">
-  <p>Death rate in Hospital (%): <span id="deathRate"></span></p>
-  <input type="range" min="0" max="100" value="3" class="slider" id="deathRateRange">
-</div>
-<div id="button-row">
-	<button id="start">Start</button>
-	<button id="stop">Stop</button>
-	<button id="new">New simulation</button>
-</div>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script  src="./script.js"></script>
+  <div class="settings">
+    <table>
+      <tbody>
+        <tr>
+          <td>uninfected </td>
+          <td>&nbsp;<span id="statUninfected"></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;infected</td>
+          <td>&nbsp;<span id="statInfected"></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;healed</td>
+          <td>&nbsp;<span id="statHealed"></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;died</td>
+          <td>&nbsp;<span id="statDied"></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;free beds</td>
+          <td>&nbsp;<span id="statFreeBeds"></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;beds needed</td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>&nbsp;</p>
+
+    <div class="slidecontainer">
+      <p>Population: <span id="populationSize"></span></p>
+      <input type="range" min="1" max="1024" value="50" class="slider" id="populationRange">
+      <p>Infected (start): <span id="infectedSize"></span></p>
+      <input type="range" min="1" max="1024" value="50" class="slider" id="infectedRange">
+      <p>Velocity: <span id="velocity"></span></p>
+      <input type="range" min="1" max="1024" value="50" class="slider" id="velocityRange">
+      <p>Beds in Hospital: <span id="hospital"></span></p>
+      <input type="range" min="1" max="1024" value="50" class="slider" id="hospitalRange">
+      <p>Need for hospital (%, otherwise dead): <span id="neededHospital"></span></p>
+      <input type="range" min="0" max="100" value="5" class="slider" id="neededHospitalRange">
+      <p>Death rate in Hospital (%): <span id="deathRate"></span></p>
+      <input type="range" min="0" max="100" value="3" class="slider" id="deathRateRange">
+    </div>
+    <div id="button-row">
+      <button id="start">Start</button>
+      <button id="stop">Stop</button>
+      <button id="new">New simulation</button>
+    </div>
+  </div>
+
+ 
 </body>
+
 </html>

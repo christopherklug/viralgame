@@ -1,13 +1,13 @@
 /*
 	Set up canvas.
 */
-var CANVAS_LENGTH = 580;
+var CANVAS_WIDTH = $('body').width() / 2;
+var CANVAS_HEIGHT = $('body').height();
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-canvas.width = CANVAS_LENGTH;
-canvas.height = CANVAS_LENGTH;
-var diff = document.documentElement.clientHeight - CANVAS_LENGTH;
-canvas.style.marginTop = '20px';
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
+var diff = document.documentElement.clientHeight - CANVAS_HEIGHT;
 
 
 var gcounter = 0;
@@ -226,14 +226,14 @@ function Ball (posX, posY, velX, velY, r, m) {
 	this.timeToHitVerticalWall = function () {
 		if (this.v.x === 0) { return Number.POSITIVE_INFINITY; }
 		if (this.v.x > 0) {
-			return ((CANVAS_LENGTH - this.r - this.p.x)/this.v.x);
+			return ((CANVAS_WIDTH - this.r - this.p.x)/this.v.x);
 		}
 		return ((this.r - this.p.x)/this.v.x);
 	};
 	this.timeToHitHorizontalWall = function () {
 		if (this.v.y === 0) { return Number.POSITIVE_INFINITY; }
 		if (this.v.y > 0) {
-			return ((CANVAS_LENGTH - this.r - this.p.y)/this.v.y);
+			return ((CANVAS_HEIGHT - this.r - this.p.y)/this.v.y);
 		}
 		return ((this.r - this.p.y)/this.v.y);
 	};
@@ -418,7 +418,7 @@ function Sim (balls) {
 	}
 
 	this.redraw = function () {
-		ctx.clearRect(0, 0, CANVAS_LENGTH, CANVAS_LENGTH);
+		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		for (var i = 0; i < this.balls.length; i++) {
 			balls[i].draw();
 
@@ -500,10 +500,10 @@ function Sim (balls) {
 /*
 	Generating initial states
 */
-var cl = CANVAS_LENGTH;
+var cl = CANVAS_WIDTH;
 function validateNewBall (balls, ball) {
-	if (	ball.p.x - ball.r <= 0 || ball.p.x + ball.r >= cl
-		 ||	ball.p.y - ball.r <= 0 || ball.p.y + ball.r >= cl)
+	if (	ball.p.x - ball.r <= 0 || ball.p.x + ball.r >= CANVAS_WIDTH
+		 ||	ball.p.y - ball.r <= 0 || ball.p.y + ball.r >= CANVAS_HEIGHT)
 		{ return false; }
 	var dx;
 	var dy;
@@ -533,8 +533,8 @@ function generateBalls (params) {
 		var vy = Math.sqrt(Math.pow(params.velocity,2))
 
 		newBall = new Ball(
-			Math.floor(Math.random()*cl),
-			Math.floor(Math.random()*cl),
+			Math.floor(Math.random()*CANVAS_WIDTH),
+			Math.floor(Math.random()*CANVAS_HEIGHT),
 			posNeg()*Math.floor(vx),
 			posNeg()*Math.floor(vy),
 			params.r

@@ -1,9 +1,34 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	box-sizing:border-box;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+
+	padding: 1rem;
+}
+
+.canvas_container {
+	height: 100%;
+}
+
 canvas {
 	display: block;
-	width: 580px;
-	height: 580px;
 	margin: auto;
 	border: 2px solid #ccc;
+}
+
+.settings {
+	
 }
 
 #button-row, #selector-row {
