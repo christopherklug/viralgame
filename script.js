@@ -117,23 +117,6 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 	var s = 0
 	//s meint den Status des punktes (infiziert/nichtinfiziert)
-	/*var sick = Math.random()
-
-	//5% sind infiziert
-	if(sick<0.05){
-		this.s=1;
-	}
-	else{
-		this.s=0;
-	}*/
-
-	if(posX<50&&posY<50){
-		this.s=1;
-		stateProxy.infected+=1;
-		stateProxy.uninfected-=1;
-	}
-	else this.s=0;
-
 
 	if (m != undefined) {
 		this.m = m;
@@ -143,21 +126,17 @@ function Ball (posX, posY, velX, velY, r, m) {
 
 	// Basic move/draw
 	this.move = function (dt) {
-
-	//this.p.x = this.p.x + this.v.x*dt;
-	//this.p.y = this.p.y + this.v.y*dt;
-	//console.log("vx:"+this.v.x+" vy:"+this.v.y);
-	if(this.s!=3){
-	this.p.x = this.p.x + this.v.x*dt;
-	this.p.y = this.p.y + this.v.y*dt;
-	}
-
+		if(this.s!=3){
+			this.p.x = this.p.x + this.v.x*dt;
+			this.p.y = this.p.y + this.v.y*dt;
+		}
 	};
+	
 	this.draw = function () {
 
 		if(this.s == 1){
 			this.healtimer-=1;
-			if(this.healtimer<=0){
+			if(this.healtimer==0){
 				if(Math.random()>0.05){
 					this.s = 2;
 					stateProxy.healed+=1;
@@ -247,8 +226,6 @@ function Ball (posX, posY, velX, velY, r, m) {
 		ball.v.y  = -ball.v.y;
 
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
-
-
 		if(ball.s==1&&this.s!=2){
 			this.s=1;
 			stateProxy.infected+=1;
@@ -260,18 +237,6 @@ function Ball (posX, posY, velX, velY, r, m) {
 			stateProxy.infected+=1;
 			stateProxy.uninfected-=1;
 		}
-		/*if(ball.s==1){
-			if(this.s=0){
-				this.s=1;
-			}
-		}
-
-		if(this.s==1){
-			if(ball.s=0){
-				ball.s=1;
-			}
-		}*/
-
 	};
 	this.bounceOffVerticalWall = function () {
 		this.v.x = -this.v.x;
@@ -544,6 +509,10 @@ function generateBalls (params) {
 			if(infectedCreated<params.infected) {
 				infectedCreated++
 				newBall.s = 1
+			
+			}else
+			{
+			newBall.s=0
 			}
 			balls.push(newBall);
 			badBallCounter = 0;
@@ -644,6 +613,20 @@ var outputDeathRate = document.getElementById("deathRate");
 outputDeathRate.innerHTML = sliderDeathRate.value;
 sliderDeathRate.oninput = function() {
 	outputDeathRate.innerHTML = this.value;
+}
+
+var sliderRecoveryTime = document.getElementById("recoveryTimeRange");
+var outputRecoveryTime = document.getElementById("recoveryTime");
+outputRecoveryTime.innerHTML = sliderRecoveryTime.value;
+sliderRecoveryTime.oninput = function() {
+	outputRecoveryTime.innerHTML = this.value;
+}
+
+var sliderHospitalTime = document.getElementById("hospitalTimeRange");
+var outputHospitalTime = document.getElementById("hospitalTime");
+outputHospitalTime.innerHTML = sliderHospitalTime.value;
+sliderHospitalTime.oninput = function() {
+	outputHospitalTime.innerHTML = this.value;
 }
 
 makeSim(sliderPopulation.value, sliderInfected.value, sliderVelocity.value,sliderHospital.value );
