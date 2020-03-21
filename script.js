@@ -169,6 +169,8 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			}
 		}
 
+		stateProxy.population = parseInt(stateProxy.root_population) - parseInt(stateProxy.dead);
+
 		ctx.beginPath();
 		if(this.s==4)
 		{
@@ -567,8 +569,15 @@ var chart;
 
 function addEntries() {
 	chart.data.labels.push(time);
-	chart.data.datasets.forEach((dataset) => {
-		dataset.data.push(stateProxy.population);
+
+	var updateArray = [];
+	updateArray.push(stateProxy.population);
+	updateArray.push(stateProxy.uninfected);
+	updateArray.push(stateProxy.infected);
+	updateArray.push(stateProxy.healed);
+
+	var c = 0; chart.data.datasets.forEach((dataset) => {
+		dataset.data.push(updateArray[c++]);
 	});
 
 	chart.update();
@@ -588,7 +597,7 @@ function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime,
 	var ctx = document.getElementById('chart').getContext('2d');
 	chart = new Chart(ctx, {
 		// The type of chart we want to create
-		type: 'area',
+		type: 'line',
 		beginAtZero: true,
 
 		// The data for our dataset
@@ -596,8 +605,27 @@ function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime,
 			labels: [],
 			datasets: [{
 				label: 'Population',
-				backgroundColor: 'rgb(255, 99, 132)',
-				borderColor: 'rgb(255, 99, 132)',
+				backgroundColor: '#aa66cc',
+				borderColor: '#aa66cc',
+				fill: 0,
+				data: []
+			},{
+				label: 'Uninfected',
+				backgroundColor: '#ffbb33',
+				borderColor: '#ffbb33',
+				fill: 1,
+				data: []
+			},{
+				label: 'Infected',
+				backgroundColor: '#ff4444',
+				borderColor: '#ff4444',
+				fill: 2,
+				data: []
+			},{
+				label: 'Healed',
+				backgroundColor: '#00C851',
+				borderColor: '#00C851',
+				fill: 3,
 				data: []
 			}]
 		},
@@ -611,6 +639,11 @@ function makeSim(populationSize, infectedSize, velocity, freeBeds, recoveryTime,
 						suggestedMax: stateProxy.root_population
 					}
 				}]
+			},
+			plugins: {
+				filler: {
+					propagate: true
+				}
 			}
 		}
 	});
@@ -645,8 +678,8 @@ function deactivateInterval() {
 }
 
 function runSim() {
-	addEntries();
-	time++;
+	if(time++ % 7 === 0) addEntries();
+	
 	sim.redraw();
 	try {
 		sim.simulate(dt);
