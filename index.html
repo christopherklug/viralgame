@@ -6,44 +6,41 @@
   <title>Viral game</title>
   <link rel="stylesheet" href="./style.css">
 
-   <!-- partial -->
-   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-   <script src="./script.js" defer="defer"></script>
+  <link rel="stylesheet" href="res/bootstrap/css/bootstrap.min.css">
+  <script src="res/bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="res/jquery.min.js"></script>
+  <script src="./script.js" defer="defer"></script>
+  
 </head>
 
 <body>
-  <!-- partial:index.partial.html -->
-
+  
   <div class="canvas_container">
     <canvas id="canvas"></canvas>
   </div>
 
   <div class="settings">
-    <table>
+
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>uninfected</th>
+          <th>infected</th>
+          <th>healed</th>
+          <th>died</th>
+          <th>free beds</th>
+          <th>needed beds</th>
+        </tr>
+      </thead>
       <tbody>
         <tr>
-          <td>uninfected </td>
-          <td>&nbsp;<span id="statUninfected"></span></td>
-        </tr>
-        <tr>
-          <td>&nbsp;infected</td>
-          <td>&nbsp;<span id="statInfected"></span></td>
-        </tr>
-        <tr>
-          <td>&nbsp;healed</td>
-          <td>&nbsp;<span id="statHealed"></span></td>
-        </tr>
-        <tr>
-          <td>&nbsp;died</td>
-          <td>&nbsp;<span id="statDied"></span></td>
-        </tr>
-        <tr>
-          <td>&nbsp;free beds</td>
-          <td>&nbsp;<span id="statFreeBeds"></span></td>
-        </tr>
-        <tr>
-          <td>&nbsp;beds needed</td>
-          <td>&nbsp;</td>
+          <td><span id="statUninfected"></span></td>
+          <td><span id="statInfected"></span></td>
+          <td><span id="statHealed"></span></td>
+          <td><span id="statDied"></span></td>
+          <td><span id="statFreeBeds"></span></td>
+          <td><span id="statNeededBeds"></span></td>
         </tr>
       </tbody>
     </table>
@@ -51,30 +48,30 @@
 
     <div class="slidecontainer">
       <p>Population: <span id="populationSize"></span></p>
-      <input type="range" min="1" max="1024" value="50" class="slider" id="populationRange">
+      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="populationRange">
       <p>Infected (start): <span id="infectedSize"></span></p>
-      <input type="range" min="1" max="1024" value="50" class="slider" id="infectedRange">
+      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="infectedRange">
       <p>Velocity: <span id="velocity"></span></p>
-      <input type="range" min="1" max="1024" value="50" class="slider" id="velocityRange">
+      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="velocityRange">
       <p>Beds in Hospital: <span id="hospital"></span></p>
-      <input type="range" min="1" max="1024" value="50" class="slider" id="hospitalRange">
+      <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="hospitalRange">
       <p>Need for hospital (%, otherwise dead): <span id="neededHospital"></span></p>
-      <input type="range" min="0" max="100" value="5" class="slider" id="neededHospitalRange">
+      <input type="range" min="0" max="100" value="5" class="custom-range slider" id="neededHospitalRange">
       <p>Death rate in Hospital (%): <span id="deathRate"></span></p>
-      <input type="range" min="0" max="100" value="3" class="slider" id="deathRateRange">
+      <input type="range" min="0" max="100" value="3" class="custom-range slider" id="deathRateRange">
       <p>Time to recovery: <span id="recoveryTime"></span></p>
-      <input type="range" min="0" max="100" value="3" class="slider" id="recoveryTimeRange">
+      <input type="range" min="0" max="100" value="3" class="custom-range slider" id="recoveryTimeRange">
       <p>Time in hospital: <span id="hospitalTime"></span></p>
-      <input type="range" min="0" max="100" value="3" class="slider" id="hospitalTimeRange">
+      <input type="range" min="0" max="100" value="3" class="custom-range slider" id="hospitalTimeRange">
     </div>
-    <div id="button-row">
-      <button id="start">Start</button>
-      <button id="stop">Stop</button>
-      <button id="new">New simulation</button>
+    <div id="button-row" class="row">
+      <input type="button" class="form-control col-sm" id="start" value="Start"></input>
+      <input type="button" class="form-control ml-1 col-sm" id="stop" value="Stop"></input>
+      <input type="button" class="form-control ml-1 col-sm" id="new" value="New simulation"></input>
     </div>
   </div>
 
- 
+
 </body>
 
 </html>

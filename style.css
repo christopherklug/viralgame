@@ -28,12 +28,15 @@ canvas {
 }
 
 .settings {
-	
+	width: 100%;
+	padding: 1rem;
 }
 
 #button-row, #selector-row {
 	text-align: center;
-	margin-top: 20px;
+
+	margin: 0 !important;
+	margin-top:1rem !important;
 }
 
 .radio-box {
@@ -46,9 +49,6 @@ button {
 	margin: 0px 20px 0px 20px;
 }
 
-#new {
-	background-color: #cfc;
-}
 
 .slider {
 	-webkit-appearance: none;
