@@ -2,106 +2,106 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Viral game</title>
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <title>Viral game</title>
+    <link rel="stylesheet" href="./style.css">
 
-  <link rel="stylesheet" href="res/bootstrap/css/bootstrap.min.css">
-  <script src="res/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="res/bootstrap/css/bootstrap.min.css">
+    <script src="res/bootstrap/js/bootstrap.min.js"></script>
 
-  <script src="res/Chart.bundle.min.js"></script>
-  <script src="res/jquery.min.js"></script>
-  <script src="./script.js" defer="defer"></script>
+    <script src="res/Chart.bundle.min.js"></script>
+    <script src="res/jquery.min.js"></script>
+    <script src="./script.js" defer="defer"></script>
 
 </head>
 
 <body>
 
-  <div class="canvas_container">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <div class="settings">
-
-    <canvas id="chart"></canvas>
-
-    <script>
-
-    </script>
-
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th>uninfected</th>
-          <th>infected</th>
-          <th>cured</th>
-          <th>deaths</th>
-          <th>free beds in hospital</th>
-          <th>died because the hospital was full</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span id="statUninfected"></span></td>
-          <td><span id="statInfected"></span></td>
-          <td><span id="statHealed"></span></td>
-          <td><span id="statDied"></span></td>
-          <td><span id="statFreeBeds"></span></td>
-          <td><span id="statDiedBecauseOfNoBed"></span></td>
-        </tr>
-      </tbody>
-    </table>
-    <p>&nbsp;</p>
-
-    <div class="slidecontainer">
-
-      <div class="row">
-        <div class="col-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">General parameters (immutable)</h5>
-              <p>Population at the beginning: <span id="populationSize"></span></p>
-              <input type="range" min="1" max="1024" value="500" class="custom-range slider" id="populationRange">
-              <p>Initially infected: <span id="infectedSize"></span></p>
-              <input type="range" min="1" max="1024" value="1" class="custom-range slider" id="infectedRange">
-              <p>Probability of hospitalization (already infected): <span id="neededHospital"></span></p>
-              <input type="range" min="0" max="100" value="10" class="custom-range slider" id="neededHospitalRange">
-              <p>Probability of death (after hospitalisation): <span id="deathRate"></span></p>
-              <input type="range" min="0" max="100" value="10" class="custom-range slider" id="deathRateRange">
-              <p>Time to recovery: <span id="recoveryTime"></span></p>
-              <input type="range" min="0" max="200" value="150" class="custom-range slider" id="recoveryTimeRange">
-              <p>Length of stay in hospital: <span id="hospitalTime"></span></p>
-              <input type="range" min="0" max="200" value="100" class="custom-range slider" id="hospitalTimeRange">
-            </div>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Countermeasures</h5>
-              <p>Persons with fixed position (isolation): <span id="populationFixed"></span></p>
-              <input type="range" min="0" max="1024" value="50" class="custom-range slider" id="populationFixedRange">
-              <p>Speed of movement: <span id="velocity"></span></p>
-              <input type="range" min="1" max="300" value="100" class="custom-range slider" id="velocityRange">
-              <p>Available beds in hospital: <span id="hospital"></span></p>
-              <input type="range" min="0" max="100" value="5" class="custom-range slider" id="hospitalRange">
-              <p>Probability of infection on contact: <span id="infectionP"></span></p>
-              <input type="range" min="0" max="100" value="100" class="custom-range slider" id="infectionPRange">
-            </div>
-          </div>
-          Important: After changing parameters, "new Simulation" must be clicked.
-          <div id="button-row" class="row">
-            <input type="button" class="form-control col-sm" id="start" value="Start"></input>
-            <input type="button" class="form-control ml-1 col-sm" id="stop" value="Stop"></input>
-            <input type="button" class="form-control ml-1 col-sm" id="new" value="New simulation"></input>
-          </div>
-          
-        </div>
-      </div>
-
+    <div class="canvas_container">
+        <canvas id="canvas"></canvas>
     </div>
 
-  </div>
+    <div class="settings">
+
+        <h1>ViralSim - Eine interaktive Simulation zur Verbreitung von Viren</h1>
+        <hr>
+        <div class="chart_container">
+            <canvas id="chart"></canvas>
+        </div>
+
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>uninfected</th>
+                    <th>infected</th>
+                    <th>cured</th>
+                    <th>deaths</th>
+                    <th>free beds in hospital</th>
+                    <th>died because the hospital was full</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span id="statUninfected"></span></td>
+                    <td><span id="statInfected"></span></td>
+                    <td><span id="statHealed"></span></td>
+                    <td><span id="statDied"></span></td>
+                    <td><span id="statFreeBeds"></span></td>
+                    <td><span id="statDiedBecauseOfNoBed"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+
+        <div class="slidecontainer">
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">General parameters (immutable)</h5>
+                            <p>Population at the beginning: <span id="populationSize"></span></p>
+                            <input type="range" min="1" max="1024" value="500" class="custom-range slider" id="populationRange">
+                            <p>Initially infected: <span id="infectedSize"></span></p>
+                            <input type="range" min="1" max="1024" value="1" class="custom-range slider" id="infectedRange">
+                            <p>Probability of hospitalization (already infected): <span id="neededHospital"></span></p>
+                            <input type="range" min="0" max="100" value="10" class="custom-range slider" id="neededHospitalRange">
+                            <p>Probability of death (after hospitalisation): <span id="deathRate"></span></p>
+                            <input type="range" min="0" max="100" value="10" class="custom-range slider" id="deathRateRange">
+                            <p>Time to recovery: <span id="recoveryTime"></span></p>
+                            <input type="range" min="0" max="200" value="150" class="custom-range slider" id="recoveryTimeRange">
+                            <p>Length of stay in hospital: <span id="hospitalTime"></span></p>
+                            <input type="range" min="0" max="200" value="100" class="custom-range slider" id="hospitalTimeRange">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Countermeasures</h5>
+                            <p>Persons with fixed position (isolation): <span id="populationFixed"></span></p>
+                            <input type="range" min="0" max="1024" value="50" class="custom-range slider" id="populationFixedRange">
+                            <p>Speed of movement: <span id="velocity"></span></p>
+                            <input type="range" min="1" max="300" value="100" class="custom-range slider" id="velocityRange">
+                            <p>Available beds in hospital: <span id="hospital"></span></p>
+                            <input type="range" min="0" max="100" value="5" class="custom-range slider" id="hospitalRange">
+                            <p>Probability of infection on contact: <span id="infectionP"></span></p>
+                            <input type="range" min="0" max="100" value="100" class="custom-range slider" id="infectionPRange">
+                        </div>
+                    </div>
+                    Important: After changing parameters, "new Simulation" must be clicked.
+                    <div id="button-row" class="row">
+                        <input type="button" class="form-control col-sm" id="start" value="Start"></input>
+                        <input type="button" class="form-control ml-1 col-sm" id="stop" value="Stop"></input>
+                        <input type="button" class="form-control ml-1 col-sm" id="new" value="New simulation"></input>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 
 </body>
