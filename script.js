@@ -175,7 +175,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 		stateProxy.population = parseInt(stateProxy.root_population) - parseInt(stateProxy.dead);
 
-		if(this.partner!=null)
+		if(this.partner!=null&&this.partner.s!=3)
 		{
 			ctx.beginPath();
 			ctx.moveTo(this.p.x, this.p.y);
@@ -199,7 +199,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 		switch (this.s) {
 			case 0:
-				ctx.fillStyle = "#ffbb33";
+				ctx.fillStyle = "#8c8c8c";
 				break;
 			case 1:
 				ctx.fillStyle = "#ff4444";
@@ -208,7 +208,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 				ctx.fillStyle = "#00C851";
 				break;
 			case 3:
-				ctx.fillStyle = "#333";
+				ctx.fillStyle = "#000000";
 				break;
 			case 4:
 				ctx.fillStyle = "#ff4444";
@@ -665,8 +665,8 @@ function makeSim (populationSize, populationFixed, infectedSize, velocity, freeB
 				data: []
 			},{
 				label: 'Uninfected',
-				backgroundColor: '#ffbb33',
-				borderColor: '#ffbb33',
+				backgroundColor: '#8c8c8c',
+				borderColor: '#8c8c8c',
 				fill: 1,
 				pointRadius:1,
 				data: []
@@ -710,7 +710,7 @@ function makeSim (populationSize, populationFixed, infectedSize, velocity, freeB
 		dataset.data = [];
 	});
 
-	
+
 
 	balls = generateBalls({
 		style: 'random',
