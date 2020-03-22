@@ -11,23 +11,23 @@ var diff = document.documentElement.clientHeight - CANVAS_HEIGHT;
 
 
 var gcounter = 0;
-var stateCount = { uninfected: 0, infected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0 }
+var stateCount = { uninfected: 0, deadinfected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0 }
 
 var stateProxy = new Proxy(stateCount, {
     set: function(target, key, value) {
         target[key] = value;
 
         var outputStatUninfected = document.getElementById("statUninfected");
-        outputStatUninfected.innerHTML = stateCount.uninfected
+        outputStatUninfected.innerHTML = stateCount.uninfected + " (" + Math.round(100 * parseFloat(stateProxy.uninfected) / parseFloat(stateProxy.root_population)) + "%)"
 
         var outputStatInfected = document.getElementById("statInfected");
-        outputStatInfected.innerHTML = stateCount.infected
+        outputStatInfected.innerHTML = stateCount.infected + " (" + Math.round(100 * parseFloat(stateProxy.infected) / parseFloat(stateProxy.root_population)) + "%)"
 
         var outputStatHealed = document.getElementById("statHealed");
-        outputStatHealed.innerHTML = stateCount.healed
+        outputStatHealed.innerHTML = stateCount.healed + " (" + Math.round(100 * parseFloat(stateProxy.healed) / parseFloat(stateProxy.root_population)) + "%)"
 
         var outputStatDied = document.getElementById("statDied");
-        outputStatDied.innerHTML = stateCount.dead
+        outputStatDied.innerHTML = stateCount.dead + " (" + Math.round(100 * parseFloat(stateProxy.dead) / parseFloat(stateProxy.root_population)) + "%)"
 
         var outputStatFreeBeds = document.getElementById("statFreeBeds");
         outputStatFreeBeds.innerHTML = stateCount.freeBeds
