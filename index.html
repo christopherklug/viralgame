@@ -85,13 +85,17 @@
               <input type="range" min="1" max="1024" value="100" class="custom-range slider" id="velocityRange">
               <p>Available beds in hospital: <span id="hospital"></span></p>
               <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="hospitalRange">
+              <p>Probability of infection on contact: <span id="infectionP"></span></p>
+              <input type="range" min="0" max="100" value="100" class="custom-range slider" id="infectionPRange">
             </div>
           </div>
+          Important: After changing parameters, "new Simulation" must be clicked.
           <div id="button-row" class="row">
             <input type="button" class="form-control col-sm" id="start" value="Start"></input>
             <input type="button" class="form-control ml-1 col-sm" id="stop" value="Stop"></input>
             <input type="button" class="form-control ml-1 col-sm" id="new" value="New simulation"></input>
           </div>
+          
         </div>
       </div>
 
