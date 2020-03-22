@@ -557,7 +557,7 @@ function generateBalls(params) {
 		var min=0;
 		var max=params.velocity;
 		var vx = Math.random() * (+max - +min) + +min;
-		var vy = Math.sqrt(Math.pow(params.velocity,2))
+		var vy = Math.sqrt(Math.pow(params.velocity,2)-Math.pow(vx,2))
 
 		if(fixedCreated < params.populationFixed )
 		{
