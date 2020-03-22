@@ -26,7 +26,7 @@
     <canvas id="chart"></canvas>
 
     <script>
-     
+
     </script>
 
     <table class="table">
@@ -54,24 +54,24 @@
     <p>&nbsp;</p>
 
     <div class="slidecontainer">
-      
+
       <div class="row">
         <div class="col-6">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">General parameters (immutable)</h5>
               <p>Population at the beginning: <span id="populationSize"></span></p>
-              <input type="range" min="1" max="1024" value="350" class="custom-range slider" id="populationRange">
+              <input type="range" min="1" max="1024" value="500" class="custom-range slider" id="populationRange">
               <p>Initially infected: <span id="infectedSize"></span></p>
-              <input type="range" min="1" max="1024" value="10" class="custom-range slider" id="infectedRange">
+              <input type="range" min="1" max="1024" value="1" class="custom-range slider" id="infectedRange">
               <p>Probability of hospitalization (already infected): <span id="neededHospital"></span></p>
-              <input type="range" min="0" max="100" value="50" class="custom-range slider" id="neededHospitalRange">
+              <input type="range" min="0" max="100" value="10" class="custom-range slider" id="neededHospitalRange">
               <p>Probability of death (after hospitalisation): <span id="deathRate"></span></p>
-              <input type="range" min="0" max="100" value="3" class="custom-range slider" id="deathRateRange">
+              <input type="range" min="0" max="100" value="10" class="custom-range slider" id="deathRateRange">
               <p>Time to recovery: <span id="recoveryTime"></span></p>
-              <input type="range" min="0" max="100" value="100" class="custom-range slider" id="recoveryTimeRange">
+              <input type="range" min="0" max="200" value="150" class="custom-range slider" id="recoveryTimeRange">
               <p>Length of stay in hospital: <span id="hospitalTime"></span></p>
-              <input type="range" min="0" max="100" value="100" class="custom-range slider" id="hospitalTimeRange">
+              <input type="range" min="0" max="200" value="100" class="custom-range slider" id="hospitalTimeRange">
             </div>
           </div>
         </div>
@@ -82,9 +82,9 @@
               <p>Persons with fixed position (isolation): <span id="populationFixed"></span></p>
               <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="populationFixedRange">
               <p>Speed of movement: <span id="velocity"></span></p>
-              <input type="range" min="1" max="1024" value="100" class="custom-range slider" id="velocityRange">
+              <input type="range" min="1" max="300" value="100" class="custom-range slider" id="velocityRange">
               <p>Available beds in hospital: <span id="hospital"></span></p>
-              <input type="range" min="1" max="1024" value="50" class="custom-range slider" id="hospitalRange">
+              <input type="range" min="1" max="100" value="5" class="custom-range slider" id="hospitalRange">
             </div>
           </div>
           <div id="button-row" class="row">
