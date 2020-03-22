@@ -133,7 +133,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			this.p.y = this.p.y + this.v.y * dt;
 		}
 
-		if(this.p.x > CANVAS_WIDTH){
+		/*if(this.p.x > CANVAS_WIDTH){
 			this.p.x = CANVAS_WIDTH - this.r*2;
 		}
 		if(this.p.x < 0){
@@ -145,7 +145,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 		}
 		if(this.p.y < 0){
 			this.p.y = 0 + this.r*2;
-		}
+		}*/
 	};
 
 	this.draw = function () {
@@ -189,7 +189,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 		stateProxy.population = parseInt(stateProxy.root_population) - parseInt(stateProxy.dead);
 
-		if(this.partner!=null&&this.partner.s!=3)
+		if(this.partner!=null)
 		{
 			ctx.beginPath();
 			ctx.moveTo(this.p.x, this.p.y);
@@ -639,7 +639,7 @@ function addEntries() {
 	chart.data.labels.push(time);
 
 	var updateArray = [];
-	updateArray.push(stateProxy.population);
+	updateArray.push(stateProxy.dead);
 	updateArray.push(stateProxy.uninfected);
 	updateArray.push(stateProxy.infected);
 	updateArray.push(stateProxy.healed);
@@ -672,9 +672,9 @@ function makeSim (populationSize, populationFixed, infectedSize, velocity, freeB
 		data: {
 			labels: [],
 			datasets: [{
-				label: 'Population',
-				backgroundColor: '#aa66cc',
-				borderColor: '#aa66cc',
+				label: 'Dead',
+				backgroundColor: '#000000',
+				borderColor: '#000000',
 				fill: 0,
 				pointRadius:1,
 				data: []
