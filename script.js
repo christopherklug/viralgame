@@ -126,6 +126,8 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 	var m = Math.ceil(Math.PI * r * r);
 
+	var vabs = 0
+
 
 	// Basic move/draw
 	this.move = function (dt) {
@@ -286,10 +288,35 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	// Collision resolution
 	// simplified (physically not correct!)
 	this.bounceOff = function (ball) {
-		this.v.x = -this.v.x;
-		this.v.y = -this.v.y;
-		ball.v.x = -ball.v.x;
-		ball.v.y = -ball.v.y;
+		
+		
+		
+		if(this.v.x!=0||this.v.y!=0)
+		{
+			var min=0;
+			var max=this.vabs;
+			var vx = Math.random() * (+max - +min) + +min;
+			var vy = Math.sqrt(Math.pow(max,2)-Math.pow(vx,2))
+			this.v.x = posNeg()*Math.floor(vx)
+			this.v.y = posNeg()*Math.floor(vy)
+			//sim.predictAll(this)
+		}
+
+		if(ball.v.x!=0||ball.v.y!=0)
+		{
+			var min=0;
+			var max=ball.vabs;
+			var vx = Math.random() * (+max - +min) + +min;
+			var vy = Math.sqrt(Math.pow(max,2)-Math.pow(vx,2))
+			ball.v.x = posNeg()*Math.floor(vx)
+			ball.v.y = posNeg()*Math.floor(vy)
+			//sim.predictAll(ball)
+		}
+	
+		// this.v.x = -this.v.x;
+		// this.v.y = -this.v.y;
+		// ball.v.x = -ball.v.x;
+		// ball.v.y = -ball.v.y;
 
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
 		if (ball.s == 1 && this.s == 0) {
@@ -589,6 +616,7 @@ function generateBalls(params) {
 				newBall.s=0
 				}
 				fixedCreated++
+				newBall.vabs=0
 				balls.push(newBall);
 				badBallCounter = 0;
 			} else {
@@ -618,6 +646,7 @@ function generateBalls(params) {
 				{
 				newBall.s=0
 				}
+				newBall.vabs=max
 				balls.push(newBall);
 				badBallCounter = 0;
 			} else {
