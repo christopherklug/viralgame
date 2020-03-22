@@ -319,14 +319,14 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 		// ball.v.y = -ball.v.y;
 
 		//wenn ein Infizierter einen anderen berührt, wird dieser ebenfalls infiziert
-		if (ball.s == 1 && this.s == 0) {
+		if (ball.s == 1 && this.s == 0 && (Math.random()*100 < sliderInfectionP.value)) {
 			this.s = 1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
 			this.partner = ball;
 		}
 
-		if (this.s == 1 && ball.s == 0) {
+		if (this.s == 1 && ball.s == 0 && (Math.random()*100 < sliderInfectionP.value)) {
 			ball.s = 1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
@@ -864,6 +864,13 @@ var outputHospitalTime = document.getElementById("hospitalTime");
 outputHospitalTime.innerHTML = sliderHospitalTime.value;
 sliderHospitalTime.oninput = function () {
 	outputHospitalTime.innerHTML = this.value;
+}
+
+var sliderInfectionP = document.getElementById("infectionPRange");
+var outputInfectionP = document.getElementById("infectionP");
+outputInfectionP.innerHTML = sliderInfectionP.value;
+sliderInfectionP.oninput = function () {
+	outputInfectionP.innerHTML = this.value;
 }
 
 makeSim(parseInt(sliderPopulation.value), parseInt(sliderPopulationFixed.value), parseInt(sliderInfected.value), parseInt(sliderVelocity.value),parseInt(sliderHospital.value), parseInt(sliderRecoveryTime.value), parseInt(sliderHospitalTime.value) );
