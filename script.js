@@ -323,7 +323,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			this.s = 1;
 			stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
 			stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
-			this.patner = ball;
+			this.partner = ball;
 		}
 
 		if (this.s == 1 && ball.s == 0) {
