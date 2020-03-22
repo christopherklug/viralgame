@@ -115,6 +115,7 @@ function MinPQ() {
 function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	this.p = { x: posX, y: posY };
 	this.v = { x: velX, y: velY };
+	this.vold = { x: velX, y: velY };
 	this.r = r;
 	this.healtimer = recoveryTime;
 	this.hospitaltimer = hospitalTime;
@@ -128,10 +129,8 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 	// Basic move/draw
 	this.move = function (dt) {
-		if (this.s != 3 && this.s != 4) {
-			this.p.x = this.p.x + this.v.x * dt;
-			this.p.y = this.p.y + this.v.y * dt;
-		}
+		this.p.x = this.p.x + this.v.x * dt;
+		this.p.y = this.p.y + this.v.y * dt;
 
 		/*if(this.p.x > CANVAS_WIDTH){
 			this.p.x = CANVAS_WIDTH - this.r*2;
@@ -158,10 +157,16 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 					if (stateProxy.freeBeds > 0) {
 						stateProxy.freeBeds = parseInt(stateProxy.freeBeds) - parseInt(1)
 						this.s = 4
+						this.v.x = 0
+						this.v.y = 0
+						sim.predictAll(this)
 					}
 					else {
 						stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1)
 						stateProxy.diedBecauseOfNoBed = parseInt(stateProxy.diedBecauseOfNoBed) + parseInt(1)
+						this.v.x = 0
+						this.v.y = 0;
+						sim.predictAll(this)
 						this.s = 3
 					}
 				}
@@ -181,6 +186,9 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 					}
 					else {
 						this.s = 2;
+						this.v.x = this.vold.x;
+						this.v.y = this.vold.y;
+						sim.predictAll(this)
 						stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
 					}
 				}
@@ -244,6 +252,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 
 	// Collision prediction
 	this.timeToHit = function (ball) {
+		if(this.s == 3 || this.s == 4 || ball.s == 3 || ball.s == 4) { return Number.POSITIVE_INFINITY; }
 		if (this.equals(ball)) { return Number.POSITIVE_INFINITY; }
 		var dpx = ball.p.x - this.p.x;
 		var dpy = ball.p.y - this.p.y;
