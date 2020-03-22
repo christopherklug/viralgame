@@ -132,6 +132,20 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 			this.p.x = this.p.x + this.v.x * dt;
 			this.p.y = this.p.y + this.v.y * dt;
 		}
+
+		if(this.p.x > CANVAS_WIDTH){
+			this.p.x = CANVAS_WIDTH - this.r*2;
+		}
+		if(this.p.x < 0){
+			this.p.x = 0 + this.r*2;
+		}
+
+		if(this.p.y > CANVAS_HEIGHT){
+			this.p.y = CANVAS_HEIGHT - this.r*2;
+		}
+		if(this.p.y < 0){
+			this.p.y = 0 + this.r*2;
+		}
 	};
 
 	this.draw = function () {
@@ -289,6 +303,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	this.bounceOffHorizontalWall = function () {
 		this.v.y = -this.v.y;
 	};
+
 }
 
 /*
