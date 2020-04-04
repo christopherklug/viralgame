@@ -11,6 +11,7 @@ var diff = document.documentElement.clientHeight - CANVAS_HEIGHT;
 
 
 var gcounter = 0;
+var slowVal = 2;
 var stateCount = { uninfected: 0, deadinfected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0 }
 
 var stateProxy = new Proxy(stateCount, {
@@ -121,6 +122,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
     this.hospitaltimer = hospitalTime;
     this.partner = null;
 
+
     var s = 0 // 0:uninfected, 1:infected, 2:healed, 3: dead, 4:hospital
         //s meint den Status des punktes (infiziert/nichtinfiziert)
 
@@ -162,6 +164,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
                         this.v.x = 0
                         this.v.y = 0
                         sim.predictAll(this)
+                        this.partner = null;
                     } else {
                         stateProxy.dead = parseInt(stateProxy.dead) + parseInt(1)
                         stateProxy.diedBecauseOfNoBed = parseInt(stateProxy.diedBecauseOfNoBed) + parseInt(1)
@@ -169,10 +172,12 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
                         this.v.y = 0;
                         sim.predictAll(this)
                         this.s = 3
+                        this.partner = null;
                     }
                 } else {
                     this.s = 2;
                     stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
+                    this.partner = null;
                 }
             }
         } else {
@@ -187,7 +192,7 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
                         this.s = 2;
                         this.v.x = this.vold.x;
                         this.v.y = this.vold.y;
-                        sim.predictAll(this)
+                        sim.predictAll(this);
                         stateProxy.healed = parseInt(stateProxy.healed) + parseInt(1);
                     }
                 }
@@ -289,9 +294,18 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
             var min = 0;
             var max = this.vabs;
             var vx = Math.random() * (+max - +min) + +min;
-            var vy = Math.sqrt(Math.pow(max, 2) - Math.pow(vx, 2))
-            this.v.x = posNeg() * Math.floor(vx)
-            this.v.y = posNeg() * Math.floor(vy)
+            var vy = Math.sqrt(Math.pow(max, 2) - Math.pow(vx, 2));
+
+            if(this.s==1){
+            this.v.x = posNeg() * Math.floor(vx)/slowVal;
+            this.v.y = posNeg() * Math.floor(vy)/slowVal;
+            }
+            else
+            {
+              this.v.x = posNeg() * Math.floor(vx);
+              this.v.y = posNeg() * Math.floor(vy);
+            }
+
                 //sim.predictAll(this)
         }
 
@@ -300,8 +314,15 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
             var max = ball.vabs;
             var vx = Math.random() * (+max - +min) + +min;
             var vy = Math.sqrt(Math.pow(max, 2) - Math.pow(vx, 2))
-            ball.v.x = posNeg() * Math.floor(vx)
-            ball.v.y = posNeg() * Math.floor(vy)
+            if(ball.s==1){
+            ball.v.x = posNeg() * Math.floor(vx)/slowVal;
+            ball.v.y = posNeg() * Math.floor(vy)/slowVal;
+            }
+            else
+            {
+              ball.v.x = posNeg() * Math.floor(vx);
+              ball.v.y = posNeg() * Math.floor(vy);
+            }
                 //sim.predictAll(ball)
         }
 
@@ -316,6 +337,9 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
             stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
             stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
             this.partner = ball;
+            this.v.x = this.v.x/slowVal;
+            this.v.y = this.v.y/slowVal;
+            sim.predictAll(this);
         }
 
         if (this.s == 1 && ball.s == 0 && (Math.random() * 100 < sliderInfectionP.value)) {
@@ -323,6 +347,9 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
             stateProxy.infected = parseInt(stateProxy.infected) + parseInt(1);
             stateProxy.uninfected = parseInt(stateProxy.uninfected) - parseInt(1);
             ball.partner = this;
+            this.v.x = this.v.x/slowVal;
+            this.v.y = this.v.y/slowVal;
+            sim.predictAll(this);
         }
     };
     this.bounceOffVerticalWall = function() {
