@@ -28,7 +28,7 @@ var stateProxy = new Proxy(stateCount, {
         outputStatHealed.innerHTML = stateCount.healed + " (" + Math.round(100 * parseFloat(stateProxy.healed) / parseFloat(stateProxy.root_population)) + "%)"
 
         var outputStatDied = document.getElementById("statDied");
-        outputStatDied.innerHTML = stateCount.dead + " (" + Math.round(100 * parseFloat(stateProxy.dead) / parseFloat(stateProxy.root_population)) + "%)"
+        outputStatDied.innerHTML = stateCount.dead + " (" + Math.round(100 * parseFloat(stateProxy.dead) / parseFloat(stateProxy.root_population-stateProxy.uninfected)) + "%)" //Sterberate statt Todeszahlen?
 
         var outputStatFreeBeds = document.getElementById("statFreeBeds");
         outputStatFreeBeds.innerHTML = stateCount.freeBeds
@@ -369,6 +369,11 @@ function Ball(posX, posY, velX, velY, r, recoveryTime, hospitalTime) {
 	If SECOND is null, that means horizontal wall collision.
 */
 function SimEvent(time, a, b) {
+
+    if(stateProxy.infected==0&&stateProxy.root_freeBeds==stateProxy.freeBeds){
+      deactivateInterval();
+    }
+
     this.time = time;
     this.a = a;
     this.b = b;
@@ -714,6 +719,7 @@ function makeSim(populationSize, populationFixed, infectedSize, velocity, freeBe
     stateProxy.dead = 0
     stateProxy.uninfected = populationSize - infectedSize;
     stateProxy.freeBeds = freeBeds;
+    stateProxy.root_freeBeds = freeBeds;
     stateProxy.diedBecauseOfNoBed = 0;
 
     var ctx = document.getElementById('chart').getContext('2d');
@@ -729,29 +735,33 @@ function makeSim(populationSize, populationFixed, infectedSize, velocity, freeBe
                 label: 'Dead',
                 backgroundColor: '#000000',
                 borderColor: '#000000',
+                borderWidth: '2',
                 fill: 0,
-                pointRadius: 1,
+                pointRadius: 0,
                 data: []
             }, {
                 label: 'Uninfected',
                 backgroundColor: '#8c8c8c',
                 borderColor: '#8c8c8c',
+                borderWidth: '2',
                 fill: 1,
-                pointRadius: 1,
+                pointRadius: 0,
                 data: []
             }, {
                 label: 'Infected',
                 backgroundColor: '#ff4444',
                 borderColor: '#ff4444',
+                borderWidth: '2',
                 fill: 2,
-                pointRadius: 1,
+                pointRadius: 0,
                 data: []
             }, {
                 label: 'Healed',
                 backgroundColor: '#00C851',
                 borderColor: '#00C851',
+                borderWidth: '2',
                 fill: 3,
-                pointRadius: 1,
+                pointRadius: 0,
                 data: []
             }]
         },
