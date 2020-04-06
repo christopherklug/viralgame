@@ -11,7 +11,7 @@ var diff = document.documentElement.clientHeight - CANVAS_HEIGHT;
 
 
 var gcounter = 0;
-var slowVal = 2;
+var slowVal = 1; //Verlangsamungswert bei Infektion
 var stateCount = { uninfected: 0, deadinfected: 0, healed: 0, dead: 0, freeBeds: 0, diedBecauseOfNoBed: 0 }
 
 var stateProxy = new Proxy(stateCount, {
