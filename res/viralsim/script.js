@@ -728,6 +728,8 @@ function makeSim(populationSize, populationFixed, infectedSize, velocity, freeBe
         type: 'line',
         beginAtZero: true,
 
+        //stepSize: 5,
+
         // The data for our dataset
         data: {
             labels: [],
@@ -768,13 +770,13 @@ function makeSim(populationSize, populationFixed, infectedSize, velocity, freeBe
 
         // Configuration options go here
         options: {
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             scales: {
                 yAxes: [{
                     ticks: {
                         suggestedMin: 0,
                         suggestedMax: stateProxy.root_population,
-                        stepSize: Math.round(stateProxy.root_population / 10)
+                        stepSize: Math.round(stateProxy.root_population / 10),
                     }
                 }]
             },
