@@ -375,3 +375,18 @@ a, a:focus, a:hover {
 .footer .copyright a {
     font-weight: 600
 }
+
+a:link {
+  color: #ff4444;
+}
+
+a:hover {
+  color: #00C851;
+}
+
+
+iframe{
+
+  width: 100%;
+  height: 100%;
+}
