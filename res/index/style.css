@@ -376,11 +376,11 @@ a, a:focus, a:hover {
     font-weight: 600
 }
 
-a:link {
+.about a:link {
   color: #ff4444;
 }
 
-a:hover {
+.about a:hover {
   color: #00C851;
 }
 
@@ -388,5 +388,5 @@ a:hover {
 iframe{
 
   width: 100%;
-  height: 100%;
+  height: 400px;
 }
