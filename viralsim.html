@@ -58,24 +58,24 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">General parameters (immutable)</h5>
-                            <p>Population at the beginning: <span id="populationSize"></span></p>
+                            <p data-toggle="tooltip" title="Sets the number of individuals in the simulation.">Population at the beginning: <span id="populationSize"></span></p>
                             <input type="range" min="1" max="1024" value="500" class="custom-range slider"
-                                id="populationRange">
-                            <p>Initially infected: <span id="infectedSize"></span></p>
+                                id="populationRange" data-toggle="tooltip" title="Sets the number of individuals in the simulation.">
+                            <p data-toggle="tooltip" title="Sets the number of individuals that are infected at the beginning of the simulation.">Initially infected: <span id="infectedSize"></span></p>
                             <input type="range" min="1" max="1024" value="1" class="custom-range slider"
-                                id="infectedRange">
-                            <p>Probability of hospitalization (already infected): <span id="neededHospital"></span></p>
+                                id="infectedRange" data-toggle="tooltip" title="Sets the number of individuals that are infected at the beginning of the simulation.">
+                            <p data-toggle="tooltip" title="Probability that an individual will have to go to hospital in case of infection. Entry into hospital only after the recovery period has expired.">Probability of hospitalization (already infected): <span id="neededHospital"></span></p>
                             <input type="range" min="0" max="100" value="10" class="custom-range slider"
-                                id="neededHospitalRange">
-                            <p>Probability of death (after hospitalisation): <span id="deathRate"></span></p>
+                                id="neededHospitalRange" data-toggle="tooltip" title="Probability that an individual will have to go to hospital in case of infection. Entry into hospital only after the recovery period has expired.">
+                            <p data-toggle="tooltip" title="Probability of an individual dying. The death occurs with the given probability after the end of the hospital stay.">Probability of death (after hospitalisation): <span id="deathRate"></span></p>
                             <input type="range" min="0" max="100" value="10" class="custom-range slider"
-                                id="deathRateRange">
-                            <p>Time to recovery: <span id="recoveryTime"></span></p>
+                                id="deathRateRange" data-toggle="tooltip" title="Probability of an individual dying. The death occurs with the given probability after the end of the hospital stay.">
+                            <p data-toggle="tooltip" title="Number of simulation steps until an individual has recovered.">Time to recovery: <span id="recoveryTime"></span></p>
                             <input type="range" min="0" max="200" value="150" class="custom-range slider"
-                                id="recoveryTimeRange">
-                            <p>Length of stay in hospital: <span id="hospitalTime"></span></p>
+                                id="recoveryTimeRange" data-toggle="tooltip" title="Number of simulation steps until an individual has recovered.">
+                            <p data-toggle="tooltip" title="Time an individual spends in hospital should be required to go to hospital.">Length of stay in hospital: <span id="hospitalTime"></span></p>
                             <input type="range" min="0" max="200" value="100" class="custom-range slider"
-                                id="hospitalTimeRange">
+                                id="hospitalTimeRange" data-toggle="tooltip" title="Time an individual spends in hospital should be required to go to hospital.">
                         </div>
                     </div>
                 </div>
@@ -90,18 +90,18 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Countermeasures</h5>
-                            <p>Persons with fixed position (isolation): <span id="populationFixed"></span></p>
+                            <p data-toggle="tooltip" title="Number of individuals not moving. Should represent quarantine.">Persons with fixed position (isolation): <span id="populationFixed"></span></p>
                             <input type="range" min="0" max="1024" value="50" class="custom-range slider"
-                                id="populationFixedRange">
-                            <p>Speed of movement: <span id="velocity"></span></p>
+                                id="populationFixedRange" data-toggle="tooltip" title="Number of individuals not moving. Should represent quarantine.">
+                            <p data-toggle="tooltip" title="The speed at which the individuals move.">Speed of movement: <span id="velocity"></span></p>
                             <input type="range" min="1" max="300" value="100" class="custom-range slider"
-                                id="velocityRange">
-                            <p>Available beds in hospital: <span id="hospital"></span></p>
+                                id="velocityRange" data-toggle="tooltip" title="The speed at which the individuals move.">
+                            <p data-toggle="tooltip" title="Hospital beds available. If the beds are all occupied and an individual has to go to the hospital, he dies.">Available beds in hospital: <span id="hospital"></span></p>
                             <input type="range" min="0" max="100" value="5" class="custom-range slider"
-                                id="hospitalRange">
-                            <p>Probability of infection on contact: <span id="infectionP"></span></p>
+                                id="hospitalRange" data-toggle="tooltip" title="Hospital beds available. If the beds are all occupied and an individual has to go to the hospital, he dies.">
+                            <p data-toggle="tooltip" title="Likelihood of an individual becoming infected on contact with another individual. Represents protective measures, such as masks.">Probability of infection on contact: <span id="infectionP"></span></p>
                             <input type="range" min="0" max="100" value="100" class="custom-range slider"
-                                id="infectionPRange">
+                                id="infectionPRange" data-toggle="tooltip" title="Likelihood of an individual becoming infected on contact with another individual. Represents protective measures, such as masks.">
                         </div>
                     </div>
                 </div>
