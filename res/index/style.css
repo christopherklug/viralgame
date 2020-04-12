@@ -99,6 +99,17 @@ a, a:focus, a:hover {
     background: #00796b!important
 }
 
+.btn-solid-border-social:hover {
+    border: 1px solid #e0f2f1!important;
+    background: #6b6b6b!important
+}
+
+.btn-solid-border-social {
+    border: 1px solid #fff;
+    background: 0 0;
+    color: #fff
+}
+
 .btn:active:focus, .btn:focus {
     outline: 0
 }
