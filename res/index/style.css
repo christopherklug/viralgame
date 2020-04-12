@@ -50,9 +50,9 @@ a, a:focus, a:hover {
     background: #655e7a;
     color: #fff;
     display: inline-block;
-    font-size: 14px;
+    font-size: 17.6px;
     letter-spacing: 1px;
-    padding: 14px 35px;
+    padding: 20px 48px;
     text-transform: uppercase;
     border-radius: 0;
     -webkit-transition: all .2s ease;
@@ -64,6 +64,27 @@ a, a:focus, a:hover {
 
 .btn-main:hover {
     background: #353240;
+    color: #fff
+}
+
+.btn-social {
+    background: #655e7a;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 7px 7px;
+    text-transform: uppercase;
+    border-radius: 0;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease
+}
+
+.btn-social:hover {
+    background: #000000;
     color: #fff
 }
 
@@ -183,6 +204,11 @@ a, a:focus, a:hover {
     border: 1px solid #e0f2f1
 }
 
+.slider .block .btn-social {
+    background: #00695c;
+    border: 1px solid #e0f2f1
+}
+
 .slider .block p {
     margin-bottom: 35px;
     color: #eee;
@@ -219,6 +245,12 @@ a, a:focus, a:hover {
 }
 
 .call-to-action .btn-main {
+    padding: 15px 35px;
+    font-size: 12px;
+    margin-top: 30px
+}
+
+.call-to-action .btn-social {
     padding: 15px 35px;
     font-size: 12px;
     margin-top: 30px
@@ -355,6 +387,12 @@ a, a:focus, a:hover {
     font-size: 12px
 }
 
+.post .post-content .btn-social {
+    padding: 10px 20px;
+    margin: 15px 0;
+    font-size: 12px
+}
+
 .footer {
     background: #f5f5f5;
     text-align: center;
@@ -377,7 +415,7 @@ a, a:focus, a:hover {
 }
 
 .about a:link {
-  color: #ff4444;
+  font-weight: bold;
 }
 
 .about a:hover {

@@ -27,6 +27,13 @@
               sind von einer Vielzahl von Faktoren abhängig. </p> <a href="viralsim.html" target="_blank"
               class="btn btn-main btn-solid-border" style="color: #ffffff; font-weight: bold;">Entdecke unser
               Projekt</a>
+              <br><br>
+              <a href="https://devpost.com/software/023_generellekommunikation_viralgame" target="_blank"
+              class="btn btn-social btn-solid-border" style="color: #ffffff; font-weight: bold; background: #003e54;">Devpost</a>
+              <a href="https://github.com/christopherklug/viralgame" target="_blank"
+              class="btn btn-social btn-solid-border" style="color: #ffffff; font-weight: bold; background: #24292e;">GitHub</a>
+              <a href="https://youtu.be/-YHERqDDAuY" target="_blank"
+              class="btn btn-social btn-solid-border" style="color: #ffffff; font-weight: bold; background: #ff0000;">YouTube Pitch Video</a>
           </div>
         </div>
       </div>
@@ -48,6 +55,15 @@
               ViralSim hat zweifellos das Potenzial, zu verdeutlichen, wie schon geringfügige Veränderungen durch das
               Einhalten von
               Ausgangssperren oder Hygienevorschriften den Verlauf einer Pandemie erheblich beeinflussen.
+              <br><br>
+              <div class="thumbnail">
+                <a href="res/index/viralgif_a2.gif">
+                  <img src="res/index/viralgif_a2.gif" alt="Lights" style="width:100%">
+                  <div class="caption">
+                    <p>ViralSim visualisiert die dynamische Ausbreitung von Viren aufbauend mit der Berücksichtigung einer Vielzahl an konfigurierbaren Parametern</p>
+                  </div>
+                </a>
+              </div>
             </p>
             <div class="section-title">
               <p>In welchem Rahmen ist das Projekt entstanden?</p>
@@ -137,7 +153,18 @@
               Zu dieser Herausforderung war ein Link zu
               <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/" target=_blank>Simulationen
                 der Washington Post</a> gegeben,
-              die uns als Inspiration dienten. Wir entschieden uns dazu, diese Simulation nachzubauen und durch die
+              die uns als Inspiration dienten.
+              <br><br>
+              <div class="thumbnail">
+                <a href="res/index/sc8.JPG">
+                  <img src="res/index/sc8.JPG" alt="Lights" style="width:100%">
+                  <div class="caption">
+                    <p>Der Artikel der Washington Post simuliert bereits einige Einflussfaktoren zur Ausbreitung von Viren und veranschaulicht ihre Relevanz auf besondere Weise, indem sich die Simulationen vor den eigenen Augen entfalten</p>
+                  </div>
+                </a>
+              </div>
+              <p>
+              Wir entschieden uns dazu, diese Simulation nachzubauen und durch die
               Eingabe von Daten
               anpassbar zu gestalten und weitere Parameter einfließen zu lassen. Während der Suche nach eventuellen
               weiteren
@@ -145,6 +172,60 @@
               Das eine Team nutzte einen spielerischen und das andere einen mathematischen Ansatz.
               Mit diesen Teams blieben wir über den Verlauf des Hackathon in Kontakt.
               <br><br>
+              Auf der Suche nach einer geeigneten Basis für unser Vorhaben sind wir auf eine <a href="https://codepen.io/djmot/pen/XNQEBy" target=_blank>Simulation von Partikel Kollisionen</a>
+              auf <a href="https://codepen.io/" target=_blank>codepen.io </a> vom Nutzer <a href="https://codepen.io/djmot" target=_blank>@djmot </a>gestoßen.
+              </p>
+              <br><br>
+              <div class="thumbnail">
+                <a href="res/index/sc7.JPG">
+                  <img src="res/index/sc7.JPG" alt="Lights" style="width:100%">
+                  <div class="caption">
+                    <p>Die <i>Particle Collision Simulation</i> von @djmot ist in der Lage, eine Vielzahl an unterschiedlichen Kollisionen zu visualisieren</p>
+                  </div>
+                </a>
+              </div>
+              <p>
+              Da es sich dabei um ein Open Source Projekt handelt, haben wir die
+              grundlegenden Strukturen übernommen, überflüssige Funktionalitäten im Quellcode entfernt und begonnen, eigene
+              Parameter in die Simulation einzuarbeiten. Mit der Basis einer Kollision verschiedener sich bewegender Instanzen
+              in einem abgeschlossenen Raum haben wir zunächst verschiedene Stadien den Objekten hinzugefügt, sodass sie
+              bei einer Kollision zunächst andere “infizieren” können (<font color="#ff4444"><i>rote Färbung</i></font>). Darauf aufbauend wurde eine Genesungszeit
+              eingebaut, nach deren Ablauf das gesunde Stadium erreicht wird (<font color="#00C851"><i>grüne Färbung</i></font>). Damit war das erste Ziel
+              unseres Vorhabens erreicht, doch es sollten noch zwei weitere Stadien hinzugefügt werden. Einerseits
+              wurde es mit einer einstellbaren Wahrscheinlichkeit möglich, dass die Instanzen in ein Krankenhaus
+              müssen (<font color="#ff4444"><i>rotes Kreuz</i></font>), welches wiederum eine begrenzte Anzahl an einstellbaren Betten zur Verfügung
+              hat und eine bestimmte Aufenthaltszeit hat. Andererseits konnten die Instanzen mit einer ebenfalls
+              einstellbaren Wahrscheinlichkeit sterben (<font color="#000000"><i>schwarze Färbung</i></font>), nachdem sie in einem Krankenhaus waren,
+              wodurch sie niemanden mehr anstecken konnten.
+              Ist kein Krankenhausplatz (Intensivbett) verfügbar,
+              sterben die Instanzen umgehend. Für diese Parameter und zusätzlich die Einstellbarkeit der Anzahl
+              an Instanzen und der anfangs Infizierten wurden entsprechende Schieberegler implementiert.
+              </p>
+              <br><br>
+              <div class="thumbnail">
+                <a href="res/index/sc_if1.JPG">
+                  <img src="res/index/sc_if1.JPG" alt="Lights" style="width:100%">
+                  <div class="caption">
+                    <p>Das Modell ist jetzt in der Lage, vier verschiedene Stadien zu simulieren</p>
+                  </div>
+                </a>
+              </div>
+              <p>
+              Als nächster Schritt sollte der Verlauf der Simulation durch weitere Parameter beeinflusst
+              werden können. Dazu wurde eine Fixierung von Instanzen, die Bewegungsgeschwindigkeit und die Ansteckungswahrscheinlichkeit
+              implementiert. Zu Zwecken der Visualisierung wurden zuletzt ein Graph mit den Anteilen der Stadien und ein Verbindungsnetz
+              mittels Linien zwischen den Punkten eingebaut.
+              </p>
+              <br><br>
+              <div class="thumbnail">
+                <a href="res/index/sc_gr1.JPG">
+                  <img src="res/index/sc_gr1.JPG" alt="Lights" style="width:100%">
+                  <div class="caption">
+                    <p>Der Graph zeigt die Entwicklung der verschiedenen Anteile über den Verlauf der Simulation</p>
+                  </div>
+                </a>
+              </div>
+              <p>
               Die folgenden 48 Stunden waren geprägt von zahlreichen Webkonferenzen, in denen wir über die Planung und
               die Umsetzung diskutierten.
               Zwischen diesen Konferenzen fand der eigentliche Entwicklungsprozess statt. Abgesehen von wenigen Stunden
@@ -181,7 +262,7 @@
               wird der Versuch unternommen, mit einer Übersetzungsleistung von der äußerst dynamischen Ausbreitung von
               Viren,
               die Komplexität auf ein einfaches Modell herunterzubrechen. Mit Hilfe dieser Komplexitätsreduktion,
-              die auch auf die Anzahl der miteinander interagierenden Instanzen bezogen ist, wird eine solche Simulation überhaupt erst ermöglicht. 
+              die auch auf die Anzahl der miteinander interagierenden Instanzen bezogen ist, wird eine solche Simulation überhaupt erst ermöglicht.
               Die Ergebnisse der Simulationen können mit dem Verlauf der
               Pandemie
               in der Realität abgeglichen werden, um Wissen über die Wirksamkeit der Maßnahmen, aber auch über die
@@ -244,7 +325,17 @@
               auf der einen Seite
               für einen Bias anhand der strikten Simulation, vermag jedoch ebenfalls, das emergente Verhalten eines
               echten Virus widerzuspiegeln.
+            </p>
               <br><br>
+              <div class="thumbnail">
+                <a href="res/index/sc2.JPG">
+                  <img src="res/index/sc2.JPG" alt="Lights" style="width:100%">
+                  <div class="caption">
+                    <p>Die Konfiguration der unterschiedlichen Parameter und damit auch die Limitationen des Modells haben einen immensen Einfluss darauf, auf welche Weise die Ausbreitung und somit auch die Kurve verläuft</p>
+                  </div>
+                </a>
+              </div>
+              <p>
               Durch den Blick der Data Science bzw. auf den Bias unserer Simulation wird deutlich, auf welche Weise die
               entstehenden
               Daten eingeschriebene Tendenzen haben. Damit wird erneut deutlich, dass die Repräsentativität des Modells
