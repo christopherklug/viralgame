@@ -60,7 +60,7 @@
                 <a href="res/index/viralgif_a2.gif">
                   <img src="res/index/viralgif_a2.gif" alt="Lights" style="width:100%">
                   <div class="caption">
-                    <p>ViralSim visualisiert die dynamische Ausbreitung von Viren aufbauend mit der Berücksichtigung einer Vielzahl an konfigurierbaren Parametern</p>
+                    <p>ViralSim visualisiert die dynamische Ausbreitung von Viren unter Berücksichtigung einer Vielzahl an konfigurierbaren Parametern.</p>
                   </div>
                 </a>
               </div>
@@ -72,8 +72,8 @@
                 target=_blank>#WirVsVirus Hackathon</a> der Bundesregierung. Das Ziel des Hackathons war die
               gemeinschaftliche Entwicklung von Lösungen für die durch Covid-19 entstehenden individuellen und
               kollektiven Herausforderungen. Der Hackathon fand an dem Wochenende vom 20. - 22. März 2020 statt und bot
-              damit 48 Stunden für die Umsetzung der Projekte. Mit etwa 30.000 TeilnehmerInnen, 2000 Herausforderungen
-              und 3000 MentorInnen handelt es sich um den bis zu diesem Zeitpunkt weltweit größten Hackathon. Weitere
+              damit 48 Stunden für die Umsetzung der Projekte. Mit etwa 30.000 TeilnehmerInnen, 2.000 Herausforderungen
+              und 3.000 MentorInnen handelt es sich um den bis zu diesem Zeitpunkt weltweit größten Hackathon. Weitere
               Informationen finden sich auf der <a href="https://wirvsvirushackathon.org" target=blank>Webseite des
                 #WirVsVirus Hackathon</a>.
 
@@ -109,7 +109,7 @@
               Testkapazitäten und der Repräsentativität der Daten in der Realität aufgeworfen.
               <br><br>
               Es gibt einige grundlegende Prinzipien, die mit der Simulation verdeutlicht werden sollen.
-              Da wären etwa die spezifischen Auswirkungen auf den Verlauf der Ausbreitung je nach Konfiguration
+              Da wären etwa die spezifischen Auswirkungen auf den Verlauf der Ausbreitung, je nach Konfiguration
               der unterschiedlichen Parameter. So verlangsamt eine geringere Übertragungswahrscheinlichkeit etwa
               die Geschwindigkeit der Ausbreitung, es kommt jedoch dennoch zu einem exponentiellen Wachstum,
               wenn erstmal eine gewisse Anzahl an Infizierten erreicht wird. Die Anzahl der Punkte,
@@ -159,7 +159,7 @@
                 <a href="res/index/sc8.JPG">
                   <img src="res/index/sc8.JPG" alt="Lights" style="width:100%">
                   <div class="caption">
-                    <p>Der Artikel der Washington Post simuliert bereits einige Einflussfaktoren zur Ausbreitung von Viren und veranschaulicht ihre Relevanz auf besondere Weise, indem sich die Simulationen vor den eigenen Augen entfalten</p>
+                    <p>In dem Artikel der Washington Post wird bereits die Ausbreitung von Viren mit wenigen Einflussfaktoren simuliert. Dies veranschaulicht die Relevanz der Schutzmaßnahmen, indem sich die Simulationen vor den eigenen Augen entfaltet.</p>
                   </div>
                 </a>
               </div>
@@ -180,40 +180,40 @@
                 <a href="res/index/sc7.JPG">
                   <img src="res/index/sc7.JPG" alt="Lights" style="width:100%">
                   <div class="caption">
-                    <p>Die <i>Particle Collision Simulation</i> von @djmot ist in der Lage, eine Vielzahl an unterschiedlichen Kollisionen zu visualisieren</p>
+                    <p>Die <i>Particle Collision Simulation</i> von @djmot ist in der Lage, eine Vielzahl an unterschiedlichen Kollisionen zu visualisieren.</p>
                   </div>
                 </a>
               </div>
               <p>
               Da es sich dabei um ein Open Source Projekt handelt, haben wir die
               grundlegenden Strukturen übernommen, überflüssige Funktionalitäten im Quellcode entfernt und begonnen, eigene
-              Parameter in die Simulation einzuarbeiten. Mit der Basis einer Kollision verschiedener sich bewegender Instanzen
-              in einem abgeschlossenen Raum haben wir zunächst verschiedene Stadien den Objekten hinzugefügt, sodass sie
-              bei einer Kollision zunächst andere “infizieren” können (<font color="#ff4444"><i>rote Färbung</i></font>). Darauf aufbauend wurde eine Genesungszeit
+              Parameter in die Simulation einzuarbeiten. Aufbauend auf der Basis von Kollisionen der einzelnen Instanzen
+              in einem abgeschlossenen Raum haben wir den Objekten zunächst verschiedene Zustände hinzugefügt. Dies ermöglicht, dass sie
+              bei einer Kollision andere Objekte “infizieren” können (<font color="#ff4444"><i>rote Färbung</i></font>). Darauf aufbauend wurde eine Genesungszeit
               eingebaut, nach deren Ablauf das gesunde Stadium erreicht wird (<font color="#00C851"><i>grüne Färbung</i></font>). Damit war das erste Ziel
               unseres Vorhabens erreicht, doch es sollten noch zwei weitere Stadien hinzugefügt werden. Einerseits
               wurde es mit einer einstellbaren Wahrscheinlichkeit möglich, dass die Instanzen in ein Krankenhaus
               müssen (<font color="#ff4444"><i>rotes Kreuz</i></font>), welches wiederum eine begrenzte Anzahl an einstellbaren Betten zur Verfügung
-              hat und eine bestimmte Aufenthaltszeit hat. Andererseits konnten die Instanzen mit einer ebenfalls
+              hat und eine bestimmte Aufenthaltszeit besitzt. Andererseits konnten die Instanzen mit einer ebenfalls
               einstellbaren Wahrscheinlichkeit sterben (<font color="#000000"><i>schwarze Färbung</i></font>), nachdem sie in einem Krankenhaus waren,
               wodurch sie niemanden mehr anstecken konnten.
               Ist kein Krankenhausplatz (Intensivbett) verfügbar,
               sterben die Instanzen umgehend. Für diese Parameter und zusätzlich die Einstellbarkeit der Anzahl
-              an Instanzen und der anfangs Infizierten wurden entsprechende Schieberegler implementiert.
+              an Instanzen und der zu Beginn Infizierten wurden entsprechende Schieberegler implementiert.
               </p>
               <br><br>
               <div class="thumbnail">
                 <a href="res/index/sc_if1.JPG">
                   <img src="res/index/sc_if1.JPG" alt="Lights" style="width:100%">
                   <div class="caption">
-                    <p>Auf der einen Seite lassen sich Parameter der Simulation und des Virus konfigieren und auf der anderen Seite können die Gegenmaßnahmen reguliert werden</p>
+                    <p>Links lassen sich Parameter der Simulation und des Virus konfigieren und rechts können die Gegenmaßnahmen reguliert werden.</p>
                   </div>
                 </a>
               </div>
               <p>
               Als nächster Schritt sollte der Verlauf der Simulation durch weitere Parameter beeinflusst
               werden können. Dazu wurde eine Fixierung von Instanzen, die Bewegungsgeschwindigkeit und die Ansteckungswahrscheinlichkeit
-              implementiert. Zu Zwecken der Visualisierung wurden zuletzt ein Graph mit den Anteilen der Stadien und ein Verbindungsnetz
+              implementiert. Zu Zwecken der Visualisierung wurde zuletzt ein Graph mit den Anteilen der Stadien und ein Verbindungsnetz
               mittels Linien zwischen den Punkten eingebaut.
               </p>
               <br><br>
@@ -221,7 +221,7 @@
                 <a href="res/index/sc_gr1.JPG">
                   <img src="res/index/sc_gr1.JPG" alt="Lights" style="width:100%">
                   <div class="caption">
-                    <p>Der Graph zeigt die Entwicklung der verschiedenen Anteile über den Verlauf der Simulation</p>
+                    <p>Der Graph zeigt die Entwicklung der verschiedenen Anteile über den Verlauf der Simulation.</p>
                   </div>
                 </a>
               </div>
@@ -331,7 +331,7 @@
                 <a href="res/index/sc2.JPG">
                   <img src="res/index/sc2.JPG" alt="Lights" style="width:100%">
                   <div class="caption">
-                    <p>Die Konfiguration der unterschiedlichen Parameter und damit auch die Limitationen des Modells haben einen immensen Einfluss darauf, auf welche Weise die Ausbreitung und somit auch die Kurve verläuft</p>
+                    <p>Die Auswahl und Definition der Parameter und damit auch die Limitationen des Modells haben einen immensen Einfluss darauf, auf welche Weise die Ausbreitung und somit auch die Kurve verläuft.</p>
                   </div>
                 </a>
               </div>
